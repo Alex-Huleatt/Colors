@@ -83,10 +83,13 @@ public class PPanel extends javax.swing.JPanel {
     public void paint(Graphics g) {
         g.setColor(Color.WHITE);
         g.fillRect(0, 0, getWidth(), getHeight());
-        int square_size = 6;
+        int square_size = 4;
         int radius = Math.min(getWidth() / 2, getHeight() / 2) - 20;
-        double dis_inc = .2;
-        double rad_inc = 1.0 / (radius / square_size);
+        double dis_inc = Math.sqrt(square_size * square_size);
+        double circum = 2 * Math.PI * radius;
+        double numSquaresOnOuterEdge = (int) (((circum) / (square_size/2)) + .5); //rounded up
+        double rad_inc =((2 * Math.PI) / numSquaresOnOuterEdge);
+        System.out.println(numSquaresOnOuterEdge);
         for (double j = 0; j <= radius; j += dis_inc) {
             for (double i = 0; i < Math.PI * 2; i += rad_inc) {
                 double x_offset = Math.cos(i) * j;
