@@ -8,6 +8,7 @@ package GridPanel;
  *
  * @author ninjakl
  */
+import ColorPicker.ColorListener;
 import java.awt.*;
 import javax.swing.*;
 
@@ -24,5 +25,9 @@ public class GridFrame {
     
     public void setColor(Color c) {
         gp.curColor = c;
+    }
+    
+    public void giveCL(ColorListener cl) {
+        cl.listenToThis(gp);
     }
 }

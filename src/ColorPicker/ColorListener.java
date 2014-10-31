@@ -7,16 +7,23 @@
 package ColorPicker;
 import GridPanel.*;
 import java.awt.Color;
+import java.util.ArrayList;
 /**
  *
  * @author Alex
  */
 public class ColorListener {
-    public GridFrame wantsToKnow;
+    public ArrayList<ColorObserver> wantsToKnow;
     public ColorListener(GridFrame l) {
-        wantsToKnow = l;
+        wantsToKnow = new ArrayList<>();
+    }
+    public void listenToThis(ColorObserver co) {
+        wantsToKnow.add(co);
     }
     public void alert(Color newColor) {
-        wantsToKnow.setColor(newColor);
+        for (ColorObserver co : wantsToKnow) {
+            System.out.println("Alerted.");
+            co.alert(newColor);
+        }
     }
 }

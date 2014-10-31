@@ -8,13 +8,14 @@ package GridPanel;
  *
  * @author ninjakl
  */
+import ColorPicker.ColorObserver;
 import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import javax.swing.*;
 
-public class GridPanel extends JPanel{
+public class GridPanel extends JPanel implements ColorObserver{
     int height= 500;
     int width= 500;
     int gridSize = 20;
@@ -85,5 +86,11 @@ public class GridPanel extends JPanel{
     }   
     public void fillArr(int x, int y){
         colorArr[x][y] = curColor;
+    }
+
+    @Override
+    public void alert(Color c) {
+        curColor = c;
+        System.out.println("GridPanel was alerted to color change.");
     }
 }

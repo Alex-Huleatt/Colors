@@ -21,6 +21,7 @@ public class Main {
         PFrame cFrame = new PFrame();
         ColorListener cl = new ColorListener(frame);
         cFrame.giveCL(cl);
+        frame.giveCL(cl);
     }
     
 }

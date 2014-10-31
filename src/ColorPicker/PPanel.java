@@ -20,7 +20,7 @@ import java.util.Arrays;
  *
  * @author Alex
  */
-public class PPanel extends javax.swing.JPanel {
+public class PPanel extends javax.swing.JPanel implements ColorObserver {
 
     private Point mousePosn;
     public Color selectedColor;
@@ -75,14 +75,15 @@ public class PPanel extends javax.swing.JPanel {
     }
 
     public void giveCL(ColorListener cl) {
+        System.out.println("hi");
         this.cl = cl;
+        cl.listenToThis(this);
+
     }
 
     public void selectColor(Color c) {
         selectedColor = c;
-        if (cl != null) {
-            cl.alert(selectedColor);
-        }
+        cl.alert(selectedColor);
         System.out.println("Color selected " + selectedColor);
 
     }
@@ -190,4 +191,9 @@ public class PPanel extends javax.swing.JPanel {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     // End of variables declaration//GEN-END:variables
+    @Override
+    public void alert(Color c) {
+        System.out.println("PPanel was alerted to color change.");
+        //do nothing
+    }
 }
