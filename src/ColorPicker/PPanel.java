@@ -144,7 +144,7 @@ public class PPanel extends javax.swing.JPanel {
             double[] d = Colors.toRGB(deg, saturation, r / radius);
             return new Color((int)d[0],(int)d[1],(int)d[2]);
         } catch (Exception e) {
-            return null;
+            return Color.WHITE;
         }
     }
 
