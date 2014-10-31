@@ -23,6 +23,7 @@ public class PPanel extends javax.swing.JPanel {
     private Point mousePosn;
     public Color selectedColor;
     private double saturation;
+    private ColorListener cl;
 
     /**
      * Creates new form PPnael
@@ -50,6 +51,7 @@ public class PPanel extends javax.swing.JPanel {
             @Override
             public void mouseClicked(MouseEvent e) {
                 selectedColor = getColor(new Point(e.getX(),e.getY()));
+                cl.alert(selectedColor);
                 System.out.println("Color selected " + selectedColor);
             }
 
@@ -70,6 +72,9 @@ public class PPanel extends javax.swing.JPanel {
             }
 
         });
+    }
+    public void giveCL(ColorListener cl) {
+        this.cl = cl;
     }
     public void setSaturation(double d) {
         this.saturation = d;

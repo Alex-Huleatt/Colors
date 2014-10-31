@@ -27,6 +27,12 @@ public class PFrame extends javax.swing.JFrame {
         jSlider2.setSnapToTicks(false);
         jSlider2.setMajorTickSpacing(1);
         pPanel1.setSaturation(jSlider2.getValue()/100.0);
+        
+        setVisible(true);
+    }
+    
+    public void giveCL(ColorListener cl) {
+        pPanel1.giveCL(cl);
     }
 
     /**
