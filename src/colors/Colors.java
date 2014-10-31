@@ -65,7 +65,7 @@ public class Colors {
             arr = new double[]{0, x, c};
         } else if (h < 300) {
             arr = new double[]{x, 0, c};
-        } else if (h < 360) {
+        } else if (h <= 360) {
             arr = new double[]{c, 0, x};
         }
         for (int i = 0; i < 3; i++) {

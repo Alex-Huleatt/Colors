@@ -51,7 +51,7 @@ public class PPanel extends javax.swing.JPanel {
             @Override
             public void mouseClicked(MouseEvent e) {
                 selectedColor = getColor(new Point(e.getX(),e.getY()));
-                cl.alert(selectedColor);
+                if (cl!=null) cl.alert(selectedColor);
                 System.out.println("Color selected " + selectedColor);
             }
 
