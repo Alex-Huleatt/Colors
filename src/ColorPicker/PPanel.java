@@ -89,7 +89,6 @@ public class PPanel extends javax.swing.JPanel {
         double circum = 2 * Math.PI * radius;
         double numSquaresOnOuterEdge = (int) (((circum) / (square_size/2)) + .5); //rounded up
         double rad_inc =((2 * Math.PI) / numSquaresOnOuterEdge);
-        System.out.println(numSquaresOnOuterEdge);
         for (double j = 0; j <= radius; j += dis_inc) {
             for (double i = 0; i < Math.PI * 2; i += rad_inc) {
                 double x_offset = Math.cos(i) * j;
