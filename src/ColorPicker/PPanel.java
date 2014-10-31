@@ -9,6 +9,8 @@ import colors.Colors;
 import java.awt.Color;
 import java.awt.FontMetrics;
 import java.awt.Graphics;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
@@ -50,9 +52,7 @@ public class PPanel extends javax.swing.JPanel {
 
             @Override
             public void mouseClicked(MouseEvent e) {
-                selectedColor = getColor(new Point(e.getX(),e.getY()));
-                if (cl!=null) cl.alert(selectedColor);
-                System.out.println("Color selected " + selectedColor);
+                selectColor(getColor(new Point(e.getX(), e.getY())));
             }
 
             @Override
@@ -73,12 +73,24 @@ public class PPanel extends javax.swing.JPanel {
 
         });
     }
+
     public void giveCL(ColorListener cl) {
         this.cl = cl;
     }
+
+    public void selectColor(Color c) {
+        selectedColor = c;
+        if (cl != null) {
+            cl.alert(selectedColor);
+        }
+        System.out.println("Color selected " + selectedColor);
+
+    }
+
     public void setSaturation(double d) {
         this.saturation = d;
     }
+
     @Override
     public void paint(Graphics g) {
         g.setColor(Color.WHITE);
@@ -87,14 +99,14 @@ public class PPanel extends javax.swing.JPanel {
         int radius = Math.min(getWidth() / 2, getHeight() / 2) - 20;
         double dis_inc = Math.sqrt(square_size * square_size);
         double circum = 2 * Math.PI * radius;
-        double numSquaresOnOuterEdge = (int) (((circum) / (square_size/2)) + .5); //rounded up
-        double rad_inc =((2 * Math.PI) / numSquaresOnOuterEdge);
+        double numSquaresOnOuterEdge = (int) (((circum) / (square_size / 2)) + .5); //rounded up
+        double rad_inc = ((2 * Math.PI) / numSquaresOnOuterEdge);
         for (double j = 0; j <= radius; j += dis_inc) {
             for (double i = 0; i < Math.PI * 2; i += rad_inc) {
                 double x_offset = Math.cos(i) * j;
                 double[] rgb = Colors.toRGB(Math.toDegrees(i), saturation, j / radius);
                 g.setColor(new Color((int) rgb[0], (int) rgb[1], (int) rgb[2]));
-                g.fillRect((int) (getWidth() / 2 + x_offset) + square_size/2, getHeight() / 2 + (int) (Math.sin(i) * j) + square_size/2, square_size, square_size);
+                g.fillRect((int) (getWidth() / 2 + x_offset) + square_size / 2, getHeight() / 2 + (int) (Math.sin(i) * j) + square_size / 2, square_size, square_size);
             }
         }
 
@@ -144,7 +156,7 @@ public class PPanel extends javax.swing.JPanel {
         double deg = Math.atan2(getHeight() / 2 - mousePosn.y, getWidth() / 2 - mousePosn.x) * 180 / Math.PI + 180;
         try {
             double[] d = Colors.toRGB(deg, saturation, r / radius);
-            return new Color((int)d[0],(int)d[1],(int)d[2]);
+            return new Color((int) d[0], (int) d[1], (int) d[2]);
         } catch (Exception e) {
             return Color.WHITE;
         }

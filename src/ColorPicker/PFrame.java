@@ -3,10 +3,11 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package ColorPicker;
 
 import java.awt.BorderLayout;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 
 /**
  *
@@ -14,24 +15,50 @@ import java.awt.BorderLayout;
  */
 public class PFrame extends javax.swing.JFrame {
 
+    private ColorListener cl;
+
     /**
      * Creates new form PFrame
      */
     public PFrame() {
         initComponents();
-        
+        setFocusable(true);
+        addKeyListener(new KeyListener() {
+
+            @Override
+            public void keyTyped(KeyEvent e) {
+                System.out.println("hi");
+                if (e.getKeyChar() == '\n') {
+                    ColorInputFrame cf = new ColorInputFrame();
+                    cf.giveCL(cl);
+                    cf.setVisible(true);
+                }
+            }
+
+            @Override
+            public void keyPressed(KeyEvent e) {
+                System.out.println("hi");
+            }
+
+            @Override
+            public void keyReleased(KeyEvent e) {
+            }
+
+        });
+
         setTitle("Ye Ol' Color Picker");
         setLayout(new BorderLayout());
         add(pPanel1, BorderLayout.CENTER);
         add(jSlider2, BorderLayout.SOUTH);
         jSlider2.setSnapToTicks(false);
         jSlider2.setMajorTickSpacing(1);
-        pPanel1.setSaturation(jSlider2.getValue()/100.0);
-        
+        pPanel1.setSaturation(jSlider2.getValue() / 100.0);
+
         setVisible(true);
     }
-    
+
     public void giveCL(ColorListener cl) {
+        this.cl = cl;
         pPanel1.giveCL(cl);
     }
 
@@ -88,7 +115,7 @@ public class PFrame extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jSlider2StateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_jSlider2StateChanged
-        pPanel1.setSaturation(jSlider2.getValue()/100.0);
+        pPanel1.setSaturation(jSlider2.getValue() / 100.0);
         pPanel1.repaint();
     }//GEN-LAST:event_jSlider2StateChanged
 
