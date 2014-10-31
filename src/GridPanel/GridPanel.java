@@ -78,6 +78,7 @@ public class GridPanel extends JPanel{
         for(int i = 0; i < gridSize; i++){
             for(int j = 0; j < gridSize; j++)
                 if(colorArr[i][j] != null){
+                    g.setColor(colorArr[i][j]);
                     g.fillRect((i * squareSize) + 1,(j * squareSize) +1, squareSize -1,squareSize -1);
                 }
         }
