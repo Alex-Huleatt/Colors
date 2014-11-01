@@ -10,6 +10,8 @@ package GridPanel;
  */
 import ColorPicker.ColorObserver;
 import java.awt.*;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
@@ -23,7 +25,7 @@ public class GridPanel extends JPanel implements ColorObserver{
     int gridVert = ((height)/gridSize);
     int squareSize = height / gridSize;
     Color[][] colorArr = new Color[gridSize][gridSize];
-    Color curColor = Color.RED;
+    Color curColor = Color.BLACK;
     
     public GridPanel(){
         setPreferredSize(new Dimension(height,width));
@@ -62,6 +64,24 @@ public class GridPanel extends JPanel implements ColorObserver{
             @Override
             public void mouseMoved(MouseEvent e) {
            }
+            
+        });
+        addKeyListener(new KeyListener(){
+
+            @Override
+            public void keyTyped(KeyEvent e) {
+               //if (e.getKeyCode() == )
+            }
+
+            @Override
+            public void keyPressed(KeyEvent e) {
+                throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+            }
+
+            @Override
+            public void keyReleased(KeyEvent e) {
+                throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+            }
             
         });
     }
