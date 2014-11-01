@@ -22,6 +22,7 @@ public class Main {
         ColorListener cl = new ColorListener(frame);
         cFrame.giveCL(cl);
         frame.giveCL(cl);
+        cl.alert(Color.WHITE);
     }
     
 }
