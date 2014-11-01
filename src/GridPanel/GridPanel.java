@@ -99,7 +99,7 @@ public class GridPanel extends JPanel implements ColorObserver {
 
             @Override
             public void keyPressed(KeyEvent e) {
-                if (e.getKeyCode() == KeyEvent.VK_LEFT){
+                if (e.getKeyCode() == KeyEvent.VK_ENTER){
                    displayInfo(e, "KEY PRESSED: ");
                }
             }
