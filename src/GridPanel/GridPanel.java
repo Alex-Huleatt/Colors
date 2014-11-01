@@ -23,11 +23,9 @@ public class GridPanel extends JPanel implements ColorObserver {
 
     int height = 1000;
     int width = 500;
-    int gridSize = 20;
-    int gridHoriz = ((width) / gridSize);
-    int gridVert = ((height) / gridSize);
-    int squareSize = height / gridSize;
-    Color[][] colorArr = new Color[gridSize * 2][gridSize];
+    int gridSizeX = 20;
+    int gridSizeY = 20;
+    Color[][] colorArr = new Color[gridSizeX][gridSizeY];
 
     Color curColor = Color.BLACK;
     ColorListener cl;
@@ -95,13 +93,15 @@ public class GridPanel extends JPanel implements ColorObserver {
         addKeyListener(new KeyListener() {
 
             @Override
-            public void keyTyped(KeyEvent e) {
-                //if (e.getKeyCode() == )
+            public void keyTyped(KeyEvent e){
+
             }
 
             @Override
             public void keyPressed(KeyEvent e) {
-                throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+                if (e.getKeyCode() == KeyEvent.VK_LEFT){
+                   System.out.println("lol");
+               }
             }
 
             @Override
