@@ -38,6 +38,8 @@ public class PPanel extends javax.swing.JPanel implements ColorObserver {
 
             @Override
             public void mouseDragged(MouseEvent e) {
+                mousePosn = new Point(e.getX(), e.getY());
+                selectColor(getColor(new Point(e.getX(), e.getY())));
             }
 
             @Override
