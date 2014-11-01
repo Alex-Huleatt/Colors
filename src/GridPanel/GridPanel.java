@@ -23,8 +23,8 @@ public class GridPanel extends JPanel implements ColorObserver {
 
     int height = 500;
     int width = 500;
-    int gridSizeX = 30;
-    int gridSizeY = 30;
+    int gridSizeX = 10;
+    int gridSizeY = 10;
     Color[][] colorArr = new Color[gridSizeX][gridSizeY];
 
     Color curColor = Color.BLACK;
