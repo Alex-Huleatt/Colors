@@ -30,7 +30,8 @@ public class GridPanel extends JPanel implements ColorObserver {
     Color curColor = Color.BLACK;
     ColorListener cl;
     
-    boolean showGrid =true;
+    boolean showGrid = true;
+    boolean connectBox = true;
 
     public GridPanel() {
         setPreferredSize(new Dimension(height, width));
@@ -101,10 +102,15 @@ public class GridPanel extends JPanel implements ColorObserver {
 
             @Override
             public void keyPressed(KeyEvent e) {
-                if(e.getKeyCode() == KeyEvent.VK_SPACE){
+                if(e.getKeyCode() == KeyEvent.VK_1){
                     if(!showGrid){
                         showGrid = true;
                     }else showGrid = false;
+                }
+                if(e.getKeyCode() == KeyEvent.VK_2){
+                    if(!connectBox){
+                        connectBox = true;
+                    }else connectBox = false;
                 }
                 repaint();
             }
@@ -130,7 +136,9 @@ public class GridPanel extends JPanel implements ColorObserver {
             for (int j = 0; j < gridSizeY; j++) {
                 if (colorArr[i][j] != null) {
                     g.setColor(colorArr[i][j]);
-                    g.fillRect((i * actual_grid_size) + 1, (j * actual_grid_size) + 1, actual_grid_size - 1, actual_grid_size - 1);
+                    if(connectBox){
+                        g.fillRect((i * actual_grid_size) + 1, (j * actual_grid_size) + 1, actual_grid_size, actual_grid_size);
+                    }else g.fillRect((i * actual_grid_size) + 1, (j * actual_grid_size) + 1, actual_grid_size - 1, actual_grid_size - 1);
                 }
             }
         }
