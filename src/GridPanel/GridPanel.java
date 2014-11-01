@@ -29,7 +29,7 @@ public class GridPanel extends JPanel implements ColorObserver {
 
     Color curColor = Color.BLACK;
     ColorListener cl;
-    
+
     boolean showGrid = true;
     boolean connectBox = false;
     boolean backgroundShow = true;
@@ -97,26 +97,32 @@ public class GridPanel extends JPanel implements ColorObserver {
         addKeyListener(new KeyListener() {
 
             @Override
-            public void keyTyped(KeyEvent e){
-                
+            public void keyTyped(KeyEvent e) {
+
             }
 
             @Override
             public void keyPressed(KeyEvent e) {
-                if(e.getKeyCode() == KeyEvent.VK_1){
-                    if(!showGrid){
+                if (e.getKeyCode() == KeyEvent.VK_1) {
+                    if (!showGrid) {
                         showGrid = true;
-                    }else showGrid = false;
+                    } else {
+                        showGrid = false;
+                    }
                 }
-                if(e.getKeyCode() == KeyEvent.VK_2){
-                    if(!connectBox){
+                if (e.getKeyCode() == KeyEvent.VK_2) {
+                    if (!connectBox) {
                         connectBox = true;
-                    }else connectBox = false;
+                    } else {
+                        connectBox = false;
+                    }
                 }
-                if(e.getKeyCode()== KeyEvent.VK_3){
-                    if(!backgroundShow){
+                if (e.getKeyCode() == KeyEvent.VK_3) {
+                    if (!backgroundShow) {
                         backgroundShow = true;
-                    }else backgroundShow = false;
+                    } else {
+                        backgroundShow = false;
+                    }
                 }
                 repaint();
             }
@@ -137,7 +143,7 @@ public class GridPanel extends JPanel implements ColorObserver {
         int tWidth = actual_grid_size * gridSizeX;
         int tHeight = actual_grid_size * gridSizeY;
         g.setColor(Color.white);
-        if(backgroundShow){
+        if (backgroundShow) {
             g.fillRect(0, 0, tWidth, tHeight);
         }
         g.setColor(curColor);
@@ -145,14 +151,16 @@ public class GridPanel extends JPanel implements ColorObserver {
             for (int j = 0; j < gridSizeY; j++) {
                 if (colorArr[i][j] != null) {
                     g.setColor(colorArr[i][j]);
-                    if(connectBox){
+                    if (connectBox) {
                         g.fillRect((i * actual_grid_size) + 1, (j * actual_grid_size) + 1, actual_grid_size, actual_grid_size);
-                    }else g.fillRect((i * actual_grid_size) + 1, (j * actual_grid_size) + 1, actual_grid_size - 1, actual_grid_size - 1);
+                    } else {
+                        g.fillRect((i * actual_grid_size) + 1, (j * actual_grid_size) + 1, actual_grid_size - 1, actual_grid_size - 1);
+                    }
                 }
             }
         }
         g.setColor(Color.black);
-        if(showGrid){
+        if (showGrid) {
             for (int i = 0; i <= actual_grid_size * gridSizeX; i += actual_grid_size) {
                 g.drawLine(0, i, tWidth, i);
             }
@@ -161,11 +169,13 @@ public class GridPanel extends JPanel implements ColorObserver {
                 g.drawLine(i, 0, i, tHeight);
             }
             g.drawLine(0, tHeight - 1, tWidth - 1, tHeight - 1);
-            }
         }
+    }
 
     public void fillArr(int x, int y) {
-        colorArr[x][y] = curColor;
+        if (x < colorArr.length && x >= 0 && y < colorArr[x].length && y >= 0) {
+            colorArr[x][y] = curColor;
+        }
     }
 
     @Override
