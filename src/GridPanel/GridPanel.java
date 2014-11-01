@@ -86,11 +86,11 @@ public class GridPanel extends JPanel implements ColorObserver {
             }
 
         });
-        addKeyListener(new KeyListener(){
+        addKeyListener(new KeyListener() {
 
             @Override
             public void keyTyped(KeyEvent e) {
-               //if (e.getKeyCode() == )
+                //if (e.getKeyCode() == )
             }
 
             @Override
@@ -102,31 +102,35 @@ public class GridPanel extends JPanel implements ColorObserver {
             public void keyReleased(KeyEvent e) {
                 throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
             }
-            
+
         });
     }
 
     public void paint(Graphics g) {
+        int dim = Math.min(getWidth(), getHeight());
+        dim -= dim % colorArr.length;
+        int actual_grid_size = (dim / colorArr.length);
+        System.out.println(actual_grid_size);
         g.setColor(Color.white);
-        g.fillRect(0, 0, height, width);
-        g.setColor(Color.black);
-        for (int i = 0; i <= width; i += gridHoriz) {
-            g.drawLine(0, i, width, i);
-        }
-        g.drawLine(width - 1, 0, width - 1, height - 1);
-        for (int i = 0; i <= height; i += gridVert) {
-            g.drawLine(i, 0, i, height);
-        }
-        g.drawLine(0, height - 1, width - 1, height - 1);
+        g.fillRect(0, 0, dim, dim);
         g.setColor(curColor);
-        for (int i = 0; i < gridSize; i++) {
-            for (int j = 0; j < gridSize; j++) {
+        for (int i = 0; i < colorArr.length; i++) {
+            for (int j = 0; j < colorArr[i].length; j++) {
                 if (colorArr[i][j] != null) {
                     g.setColor(colorArr[i][j]);
-                    g.fillRect((i * squareSize) + 1, (j * squareSize) + 1, squareSize - 1, squareSize - 1);
+                    g.fillRect((i * actual_grid_size) + 1, (j * actual_grid_size) + 1, actual_grid_size - 1, actual_grid_size - 1);
                 }
             }
         }
+        g.setColor(Color.black);
+        for (int i = 0; i < dim; i += actual_grid_size) {
+            g.drawLine(0, i, dim, i);
+        }
+        g.drawLine(dim - 1, 0, dim - 1, dim - 1);
+        for (int i = 0; i < dim; i += actual_grid_size) {
+            g.drawLine(i, 0, i, dim);
+        }
+        g.drawLine(0, dim - 1, dim - 1, dim - 1);
     }
 
     public void fillArr(int x, int y) {
