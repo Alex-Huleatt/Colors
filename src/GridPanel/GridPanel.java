@@ -38,6 +38,11 @@ public class GridPanel extends JPanel implements ColorObserver {
                 int x = e.getX() / squareSize;
                 int y = e.getY() / squareSize;
                 if (SwingUtilities.isRightMouseButton(e)) {
+                    if (colorArr[x][y] == null) {
+                        cl.alert(Color.WHITE);
+                        curColor = Color.WHITE;
+                        return;
+                    }
                     cl.alert(colorArr[x][y]);
                     curColor = colorArr[x][y];
                     return;
