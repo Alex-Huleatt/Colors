@@ -75,7 +75,6 @@ public class PPanel extends javax.swing.JPanel implements ColorObserver {
     }
 
     public void giveCL(ColorListener cl) {
-        System.out.println("hi");
         this.cl = cl;
         cl.listenToThis(this);
 
@@ -84,8 +83,6 @@ public class PPanel extends javax.swing.JPanel implements ColorObserver {
     public void selectColor(Color c) {
         selectedColor = c;
         cl.alert(selectedColor);
-        System.out.println("Color selected " + selectedColor);
-
     }
 
     public void setSaturation(double d) {
@@ -122,7 +119,7 @@ public class PPanel extends javax.swing.JPanel implements ColorObserver {
             }
             String str = "";
             for (int i = 0; i < 3; i++) {
-                str += String.format("%.2f", Math.abs(d[i])) + ((i < 2) ? " " : "");
+                str += String.format("%.0f", Math.abs(d[i])) + ((i < 2) ? " " : "");
             }
             FontMetrics gp = g.getFontMetrics();
             int x = gp.stringWidth(str);

@@ -24,11 +24,11 @@ public class PFrame extends javax.swing.JFrame {
         initComponents();
         setFocusable(true);
 
-        setTitle("Ye Ol' Color Picker");
+        setTitle("Color Picker");
         setLayout(new BorderLayout());
         add(pPanel1, BorderLayout.CENTER);
         add(jSlider2, BorderLayout.SOUTH);
-        add(colorInputPanel1, BorderLayout.EAST);
+        add(comboPanel2, BorderLayout.EAST);
         jSlider2.setSnapToTicks(false);
         jSlider2.setMajorTickSpacing(1);
         pPanel1.setSaturation(jSlider2.getValue() / 100.0);
@@ -38,9 +38,7 @@ public class PFrame extends javax.swing.JFrame {
 
     public void giveCL(ColorListener cl) {
         pPanel1.giveCL(cl);
-        cl.listenToThis(colorInputPanel1);
-        colorInputPanel1.giveCL(cl);
-        cl.listenToThis(colorSamplePanel1);
+        comboPanel2.giveCL(cl);
     }
 
     /**
@@ -55,8 +53,7 @@ public class PFrame extends javax.swing.JFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         pPanel1 = new ColorPicker.PPanel();
         jSlider2 = new javax.swing.JSlider();
-        colorInputPanel1 = new ColorPicker.ColorInputPanel();
-        colorSamplePanel1 = new ColorPicker.ColorSamplePanel();
+        comboPanel2 = new ColorPicker.ComboPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -64,7 +61,7 @@ public class PFrame extends javax.swing.JFrame {
         pPanel1.setLayout(pPanel1Layout);
         pPanel1Layout.setHorizontalGroup(
             pPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 421, Short.MAX_VALUE)
+            .addGap(0, 0, Short.MAX_VALUE)
         );
         pPanel1Layout.setVerticalGroup(
             pPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -77,40 +74,25 @@ public class PFrame extends javax.swing.JFrame {
             }
         });
 
-        javax.swing.GroupLayout colorSamplePanel1Layout = new javax.swing.GroupLayout(colorSamplePanel1);
-        colorSamplePanel1.setLayout(colorSamplePanel1Layout);
-        colorSamplePanel1Layout.setHorizontalGroup(
-            colorSamplePanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
-        );
-        colorSamplePanel1Layout.setVerticalGroup(
-            colorSamplePanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 100, Short.MAX_VALUE)
-        );
-
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap(294, Short.MAX_VALUE)
                 .addComponent(jSlider2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
             .addGroup(layout.createSequentialGroup()
                 .addComponent(pPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(colorInputPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(colorSamplePanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(comboPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(2, 2, 2))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(pPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(colorInputPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(colorSamplePanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addComponent(comboPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jSlider2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
@@ -159,8 +141,7 @@ public class PFrame extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private ColorPicker.ColorInputPanel colorInputPanel1;
-    private ColorPicker.ColorSamplePanel colorSamplePanel1;
+    private ColorPicker.ComboPanel comboPanel2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JSlider jSlider2;
     private ColorPicker.PPanel pPanel1;
