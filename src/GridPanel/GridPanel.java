@@ -102,12 +102,16 @@ public class GridPanel extends JPanel implements ColorObserver {
             @Override
             public void keyPressed(KeyEvent e) {
                 if (e.getKeyCode() == KeyEvent.VK_LEFT){
-                   System.out.println("lol");
+                   displayInfo(e, "KEY PRESSED: ");
                }
             }
 
             @Override
             public void keyReleased(KeyEvent e) {
+                throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+            }
+
+            private void displayInfo(KeyEvent e, String key_pressed_) {
                 throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
             }
 
