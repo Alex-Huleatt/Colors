@@ -29,6 +29,8 @@ public class GridPanel extends JPanel implements ColorObserver {
 
     Color curColor = Color.BLACK;
     ColorListener cl;
+    
+    boolean showGrid =true;
 
     public GridPanel() {
         setPreferredSize(new Dimension(height, width));
@@ -94,23 +96,22 @@ public class GridPanel extends JPanel implements ColorObserver {
 
             @Override
             public void keyTyped(KeyEvent e){
-
+                
             }
 
             @Override
             public void keyPressed(KeyEvent e) {
-                if (e.getKeyCode() == KeyEvent.VK_ENTER){
-                   displayInfo(e, "KEY PRESSED: ");
-               }
+                if(e.getKeyCode() == KeyEvent.VK_SPACE){
+                    if(!showGrid){
+                        showGrid = true;
+                    }else showGrid = false;
+                }
+                repaint();
             }
 
             @Override
             public void keyReleased(KeyEvent e) {
-                throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-            }
 
-            private void displayInfo(KeyEvent e, String key_pressed_) {
-                throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
             }
 
         });
@@ -134,15 +135,17 @@ public class GridPanel extends JPanel implements ColorObserver {
             }
         }
         g.setColor(Color.black);
-        for (int i = 0; i <= actual_grid_size * gridSizeX; i += actual_grid_size) {
-            g.drawLine(0, i, tWidth, i);
+        if(showGrid){
+            for (int i = 0; i <= actual_grid_size * gridSizeX; i += actual_grid_size) {
+                g.drawLine(0, i, tWidth, i);
+            }
+            g.drawLine(tWidth - 1, 0, tWidth - 1, tHeight - 1);
+            for (int i = 0; i <= actual_grid_size * gridSizeY; i += actual_grid_size) {
+                g.drawLine(i, 0, i, tHeight);
+            }
+            g.drawLine(0, tHeight - 1, tWidth - 1, tHeight - 1);
+            }
         }
-        g.drawLine(tWidth - 1, 0, tWidth - 1, tHeight - 1);
-        for (int i = 0; i <= actual_grid_size * gridSizeY; i += actual_grid_size) {
-            g.drawLine(i, 0, i, tHeight);
-        }
-        g.drawLine(0, tHeight - 1, tWidth - 1, tHeight - 1);
-    }
 
     public void fillArr(int x, int y) {
         colorArr[x][y] = curColor;
