@@ -23,15 +23,16 @@ public class GridPanel extends JPanel implements ColorObserver {
 
     int height = 500;
     int width = 500;
-    int gridSizeX = 20;
-    int gridSizeY = 20;
+    int gridSizeX = 30;
+    int gridSizeY = 30;
     Color[][] colorArr = new Color[gridSizeX][gridSizeY];
 
     Color curColor = Color.BLACK;
     ColorListener cl;
     
     boolean showGrid = true;
-    boolean connectBox = true;
+    boolean connectBox = false;
+    boolean backgroundShow = true;
 
     public GridPanel() {
         setPreferredSize(new Dimension(height, width));
@@ -112,6 +113,11 @@ public class GridPanel extends JPanel implements ColorObserver {
                         connectBox = true;
                     }else connectBox = false;
                 }
+                if(e.getKeyCode()== KeyEvent.VK_3){
+                    if(!backgroundShow){
+                        backgroundShow = true;
+                    }else backgroundShow = false;
+                }
                 repaint();
             }
 
@@ -124,13 +130,16 @@ public class GridPanel extends JPanel implements ColorObserver {
     }
 
     public void paint(Graphics g) {
+        g.clearRect(0, 0, getWidth(), getHeight()); //clears the screen
         int gridX = getWidth() / gridSizeX;
         int gridY = getHeight() / gridSizeY;
         int actual_grid_size = Math.min(gridX, gridY);
         int tWidth = actual_grid_size * gridSizeX;
         int tHeight = actual_grid_size * gridSizeY;
         g.setColor(Color.white);
-        g.fillRect(0, 0, tWidth, tHeight);
+        if(backgroundShow){
+            g.fillRect(0, 0, tWidth, tHeight);
+        }
         g.setColor(curColor);
         for (int i = 0; i < gridSizeX; i++) {
             for (int j = 0; j < gridSizeY; j++) {
