@@ -28,18 +28,13 @@ public class GridPanel extends JPanel implements ColorObserver {
     int gridVert = ((height) / gridSize);
     int squareSize = height / gridSize;
     Color[][] colorArr = new Color[gridSize][gridSize];
-<<<<<<< HEAD
+
     Color curColor = Color.BLACK;
-    
-    public GridPanel(){
-        setPreferredSize(new Dimension(height,width));
-=======
-    Color curColor = Color.RED;
     ColorListener cl;
 
     public GridPanel() {
         setPreferredSize(new Dimension(height, width));
->>>>>>> d1da4fa3563b98b7cbfc8f4e3bc8e8a664484178
+
         addMouseListener(new MouseListener() {
 
             @Override
