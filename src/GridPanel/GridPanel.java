@@ -32,7 +32,7 @@ public class GridPanel extends JPanel implements ColorObserver {
 
     public GridPanel() {
         setPreferredSize(new Dimension(height, width));
-
+        setFocusable(true);
         addMouseListener(new MouseListener() {
 
             @Override
