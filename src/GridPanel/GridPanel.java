@@ -21,13 +21,13 @@ import javax.swing.*;
 
 public class GridPanel extends JPanel implements ColorObserver {
 
-    int height = 500;
+    int height = 1000;
     int width = 500;
     int gridSize = 20;
     int gridHoriz = ((width) / gridSize);
     int gridVert = ((height) / gridSize);
     int squareSize = height / gridSize;
-    Color[][] colorArr = new Color[gridSize][gridSize];
+    Color[][] colorArr = new Color[gridSize * 2][gridSize];
 
     Color curColor = Color.BLACK;
     ColorListener cl;
@@ -39,8 +39,13 @@ public class GridPanel extends JPanel implements ColorObserver {
 
             @Override
             public void mouseClicked(MouseEvent e) {
-                int x = e.getX() / squareSize;
-                int y = e.getY() / squareSize;
+                int tWidth = (getWidth());
+                int tHeight = (getHeight());
+                int gridX = tWidth / colorArr.length;
+                int gridY = tHeight / colorArr[0].length;
+                int actual_grid_size = Math.min(gridX, gridY);
+                int x = e.getX() / actual_grid_size;
+                int y = e.getY() / actual_grid_size;
                 if (SwingUtilities.isRightMouseButton(e)) {
                     if (colorArr[x][y] == null) {
                         cl.alert(Color.WHITE);
@@ -75,8 +80,11 @@ public class GridPanel extends JPanel implements ColorObserver {
 
             @Override
             public void mouseDragged(MouseEvent e) {
-                int x = e.getX() / squareSize;
-                int y = e.getY() / squareSize;
+                int gridX = (getWidth()) / colorArr.length;
+                int gridY = (getHeight()) / colorArr[0].length;
+                int actual_grid_size = Math.min(gridX, gridY);
+                int x = e.getX() / actual_grid_size;
+                int y = e.getY() / actual_grid_size;
                 fillArr(x, y);
                 repaint();
             }
@@ -107,12 +115,15 @@ public class GridPanel extends JPanel implements ColorObserver {
     }
 
     public void paint(Graphics g) {
-        int dim = Math.min(getWidth(), getHeight());
-        dim -= dim % colorArr.length;
-        int actual_grid_size = (dim / colorArr.length);
-        System.out.println(actual_grid_size);
+        int tWidth = (getWidth());
+        int tHeight = (getHeight());
+        int gridX = tWidth / colorArr.length;
+        int gridY = tHeight / colorArr[0].length;
+        int actual_grid_size = Math.min(gridX, gridY);
+        tWidth = actual_grid_size * colorArr.length;
+        tHeight = actual_grid_size * colorArr[0].length;
         g.setColor(Color.white);
-        g.fillRect(0, 0, dim, dim);
+        g.fillRect(0, 0, tWidth, tHeight);
         g.setColor(curColor);
         for (int i = 0; i < colorArr.length; i++) {
             for (int j = 0; j < colorArr[i].length; j++) {
@@ -123,14 +134,14 @@ public class GridPanel extends JPanel implements ColorObserver {
             }
         }
         g.setColor(Color.black);
-        for (int i = 0; i < dim; i += actual_grid_size) {
-            g.drawLine(0, i, dim, i);
+        for (int i = 0; i <= actual_grid_size * colorArr[0].length; i += actual_grid_size) {
+            g.drawLine(0, i, tWidth, i);
         }
-        g.drawLine(dim - 1, 0, dim - 1, dim - 1);
-        for (int i = 0; i < dim; i += actual_grid_size) {
-            g.drawLine(i, 0, i, dim);
+        g.drawLine(tWidth - 1, 0, tWidth - 1, tHeight - 1);
+        for (int i = 0; i <= actual_grid_size * colorArr.length; i += actual_grid_size) {
+            g.drawLine(i, 0, i, tHeight);
         }
-        g.drawLine(0, dim - 1, dim - 1, dim - 1);
+        g.drawLine(0, tHeight - 1, tWidth - 1, tHeight - 1);
     }
 
     public void fillArr(int x, int y) {
