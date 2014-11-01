@@ -39,10 +39,8 @@ public class GridPanel extends JPanel implements ColorObserver {
 
             @Override
             public void mouseClicked(MouseEvent e) {
-                int tWidth = (getWidth());
-                int tHeight = (getHeight());
-                int gridX = tWidth / colorArr.length;
-                int gridY = tHeight / colorArr[0].length;
+                int gridX = (getWidth()) / colorArr.length;
+                int gridY = (getHeight()) / colorArr[0].length;
                 int actual_grid_size = Math.min(gridX, gridY);
                 int x = e.getX() / actual_grid_size;
                 int y = e.getY() / actual_grid_size;
@@ -115,13 +113,11 @@ public class GridPanel extends JPanel implements ColorObserver {
     }
 
     public void paint(Graphics g) {
-        int tWidth = (getWidth());
-        int tHeight = (getHeight());
-        int gridX = tWidth / colorArr.length;
-        int gridY = tHeight / colorArr[0].length;
+        int gridX = getWidth() / colorArr.length;
+        int gridY = getHeight() / colorArr[0].length;
         int actual_grid_size = Math.min(gridX, gridY);
-        tWidth = actual_grid_size * colorArr.length;
-        tHeight = actual_grid_size * colorArr[0].length;
+        int tWidth = actual_grid_size * colorArr.length;
+        int tHeight = actual_grid_size * colorArr[0].length;
         g.setColor(Color.white);
         g.fillRect(0, 0, tWidth, tHeight);
         g.setColor(curColor);
