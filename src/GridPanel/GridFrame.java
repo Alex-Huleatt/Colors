@@ -29,5 +29,6 @@ public class GridFrame {
     
     public void giveCL(ColorListener cl) {
         cl.listenToThis(gp);
+        gp.cl = cl;
     }
 }
