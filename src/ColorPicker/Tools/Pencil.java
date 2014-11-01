@@ -5,7 +5,6 @@
  */
 package ColorPicker.Tools;
 
-import ColorPicker.Point;
 import java.awt.Color;
 
 /**
