@@ -11,6 +11,7 @@ package GridPanel;
  */
 import ColorPicker.ColorListener;
 import ColorPicker.ColorObserver;
+import ColorPicker.Tools.Pencil;
 import ColorPicker.Tools.Tool;
 import ColorPicker.Tools.ToolObserver;
 import java.awt.*;
@@ -35,8 +36,8 @@ public class GridPanel extends JPanel implements ColorObserver, ToolObserver {
     boolean showGrid = true;
     boolean connectBox = false;
     boolean backgroundShow = true;
-    
-    Tool currentTool;
+
+    Tool currentTool = new Pencil();
 
     public GridPanel() {
         setPreferredSize(new Dimension(height, width));
@@ -177,9 +178,7 @@ public class GridPanel extends JPanel implements ColorObserver, ToolObserver {
     }
 
     public void fillArr(int x, int y) {
-        if (x < colorArr.length && x >= 0 && y < colorArr[x].length && y >= 0) {
-            colorArr[x][y] = curColor;
-        }
+        currentTool.apply(curColor, x, y, colorArr);
     }
 
     @Override
