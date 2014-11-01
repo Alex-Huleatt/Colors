@@ -10,6 +10,7 @@ package GridPanel;
  * @author ninjakl
  */
 import ColorPicker.*;
+import ColorPicker.Tools.ToolListener;
 import java.awt.Color;
 public class Main {
 
@@ -19,9 +20,12 @@ public class Main {
     public static void main(String[] args) {
         GridFrame frame = new GridFrame();
         PFrame cFrame = new PFrame();
-        ColorListener cl = new ColorListener(frame);
+        ColorListener cl = new ColorListener();
+        ToolListener tl = new ToolListener();
+        cFrame.giveTL(tl);
         cFrame.giveCL(cl);
         frame.giveCL(cl);
+        frame.giveTL(tl);
         cl.alert(Color.WHITE);
     }
     

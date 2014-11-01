@@ -11,6 +11,8 @@ package GridPanel;
  */
 import ColorPicker.ColorListener;
 import ColorPicker.ColorObserver;
+import ColorPicker.Tools.Tool;
+import ColorPicker.Tools.ToolObserver;
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
@@ -19,7 +21,7 @@ import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import javax.swing.*;
 
-public class GridPanel extends JPanel implements ColorObserver {
+public class GridPanel extends JPanel implements ColorObserver, ToolObserver {
 
     int height = 500;
     int width = 500;
@@ -33,6 +35,8 @@ public class GridPanel extends JPanel implements ColorObserver {
     boolean showGrid = true;
     boolean connectBox = false;
     boolean backgroundShow = true;
+    
+    Tool currentTool;
 
     public GridPanel() {
         setPreferredSize(new Dimension(height, width));
@@ -182,5 +186,11 @@ public class GridPanel extends JPanel implements ColorObserver {
     public void alert(Color c) {
         curColor = c;
         System.out.println("GridPanel was alerted to color change.");
+    }
+
+    @Override
+    public void alert(Tool t) {
+        currentTool = t;
+        System.out.println("GridPanel was alerted to tool change");
     }
 }

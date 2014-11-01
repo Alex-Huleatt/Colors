@@ -14,7 +14,7 @@ import java.util.ArrayList;
  */
 public class ColorListener {
     public ArrayList<ColorObserver> wantsToKnow;
-    public ColorListener(GridFrame l) {
+    public ColorListener() {
         wantsToKnow = new ArrayList<>();
     }
     public void listenToThis(ColorObserver co) {

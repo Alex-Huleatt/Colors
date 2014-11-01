@@ -9,6 +9,7 @@ package GridPanel;
  * @author ninjakl
  */
 import ColorPicker.ColorListener;
+import ColorPicker.Tools.ToolListener;
 import java.awt.*;
 import javax.swing.*;
 
@@ -30,5 +31,9 @@ public class GridFrame {
     public void giveCL(ColorListener cl) {
         cl.listenToThis(gp);
         gp.cl = cl;
+    }
+    
+    public void giveTL(ToolListener tl) {
+        tl.listen(gp);
     }
 }
