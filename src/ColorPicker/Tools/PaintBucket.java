@@ -22,7 +22,22 @@ public class PaintBucket implements Tool {
      * Color c is curColor in GridPanel
      */
     public void apply(Color c, int x, int y, Color[][] colorArr) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        Color curColor = colorArr[x][y];
+        colorArr[x][y] = c;
+        if(x > 0 && colorArr[x - 1][y] == curColor){
+            apply(c,x - 1,y,colorArr);
+        }
+        if(x < colorArr[0].length - 1&& colorArr[x + 1][y] == curColor){
+            apply(c,x + 1,y,colorArr);
+        }
+        if(y > 0 && colorArr[x][y - 1] == curColor){
+            apply(c,x,y - 1,colorArr);
+        }
+        if(y < colorArr.length - 1&& colorArr[x][y + 1] == curColor){
+            apply(c,x,y + 1,colorArr);
+        }
+        
+        
     }
 
 }
