@@ -26,8 +26,8 @@ public class GridPanel extends JPanel implements ColorObserver, ToolObserver {
 
     int height = 500;
     int width = 500;
-    int gridSizeX = 10;
-    int gridSizeY = 10;
+    int gridSizeX = 50;
+    int gridSizeY = 50;
     Color[][] colorArr = new Color[gridSizeX][gridSizeY];
 
     Color curColor = Color.BLACK;
