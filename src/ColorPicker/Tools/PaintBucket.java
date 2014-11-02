@@ -24,6 +24,10 @@ public class PaintBucket implements Tool {
     public void apply(Color c, int x, int y, Color[][] colorArr) {
         Color curColor = colorArr[x][y];
         colorArr[x][y] = c;
+        
+        //base case
+        if(c == curColor) return;
+        
         if(x > 0 && colorArr[x - 1][y] == curColor){
             apply(c,x - 1,y,colorArr);
         }
