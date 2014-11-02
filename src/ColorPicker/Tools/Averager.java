@@ -23,7 +23,7 @@ public class Averager implements Tool {
                 
         for (int i = -1; i <= 1; i++) {
             for (int j = -1; j <= 1; j++) {
-                if (x+i >= 0 && x+i < colorArr.length && y >= 0 && y < colorArr[x+i].length) {
+                if (x+i >= 0 && x+i < colorArr.length && y+j >= 0 && y+j < colorArr[x+i].length) {
                     count++;
                     Color d = colorArr[x+i][y+j];
                     if (d == null) d = Color.WHITE;
