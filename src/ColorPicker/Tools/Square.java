@@ -5,10 +5,28 @@
  */
 package ColorPicker.Tools;
 
+import struct.Delta;
+import java.awt.Color;
+import java.awt.Graphics;
+import java.util.ArrayList;
+
 /**
  *
  * @author ninjakl
  */
-public class Square {
+public class Square implements Tool{
+
+
+    @Override
+    public ArrayList<Delta> apply(Color c, int x, int y, Color[][] colorArr) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void paintSelf(Graphics g, int pixelSize) {
+        
+    }
+    
+    
     
 }

@@ -5,7 +5,8 @@
  */
 package ColorPicker.Tools;
 
-import Util.Delta;
+import struct.Delta;
+
 import java.awt.Color;
 import java.awt.Graphics;
 import java.util.ArrayList;

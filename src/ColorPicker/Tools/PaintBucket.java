@@ -6,10 +6,10 @@
 
 package ColorPicker.Tools;
 
-import Util.Point;
+
+import struct.Point;
+import struct.Delta;
 import java.awt.Color;
-import java.awt.Image;
-import Util.Delta;
 import java.awt.Graphics;
 import java.util.ArrayList;
 
@@ -57,5 +57,4 @@ public class PaintBucket implements Tool {
     public void paintSelf(Graphics g, int pixelSize) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-
 }
