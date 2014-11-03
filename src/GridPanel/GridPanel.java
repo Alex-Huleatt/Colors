@@ -38,9 +38,6 @@ public class GridPanel extends JPanel implements ColorObserver, ToolObserver {
     boolean connectBox = false;
     boolean backgroundShow = true;
     
-    boolean controlDown = false;
-    
-    LinkedList<int[][]>history = new LinkedList();
     int[][] colorIntArr = new int[gridSizeX][gridSizeY];
     
 
@@ -84,7 +81,6 @@ public class GridPanel extends JPanel implements ColorObserver, ToolObserver {
                         else colorIntArr[i][j] = -1;
                     }
                 }
-                history.add(colorIntArr);
                 System.out.println("added");
             }
 
@@ -133,22 +129,8 @@ public class GridPanel extends JPanel implements ColorObserver, ToolObserver {
                     case KeyEvent.VK_3:
                         backgroundShow = !backgroundShow;
                         break;
-                    case KeyEvent.VK_CONTROL:
-                        controlDown = true;
-                        break;
                     case KeyEvent.VK_Z:
-                        if(controlDown == true && history.peekFirst() != null){
-                            colorIntArr = history.poll();
-                             for(int i = 0; i < gridSizeX; i++){
-                                for (int j = 0; j < gridSizeY; j++){
-                                    if(colorIntArr[i][j] != -1){
-                                        colorArr[i][j] = new Color(colorIntArr[i][j]);
-                                    }
-                                }
                             
-                            }
-                             System.out.println("delete");
-                        }
                     default:break;
                 }
                 repaint();
@@ -156,12 +138,6 @@ public class GridPanel extends JPanel implements ColorObserver, ToolObserver {
 
             @Override
             public void keyReleased(KeyEvent e) {
-                switch(e.getKeyCode()){
-                    case KeyEvent.VK_CONTROL:
-                        controlDown = false;
-                    default:break;
-                }
-                
             }
 
         });
@@ -169,6 +145,8 @@ public class GridPanel extends JPanel implements ColorObserver, ToolObserver {
 
     public void paint(Graphics g) {
         g.clearRect(0, 0, getWidth(), getHeight()); //clears the screen
+        g.setColor(Color.GRAY);
+        g.clearRect(0,0,getWidth(), getHeight());
         int gridX = getWidth() / gridSizeX;
         int gridY = getHeight() / gridSizeY;
         int actual_grid_size = Math.min(gridX, gridY);
