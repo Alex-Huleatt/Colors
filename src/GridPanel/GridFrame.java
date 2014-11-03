@@ -57,7 +57,7 @@ public class GridFrame {
         });
         
         frame.add(exp, BorderLayout.NORTH);
-        frame.add(gp = new GridPanel(),BorderLayout.CENTER);
+        frame.add(gp = new GridPanel(100,100),BorderLayout.CENTER);
         
         lp = new LayerPanel();
         frame.add(lp,BorderLayout.SOUTH);

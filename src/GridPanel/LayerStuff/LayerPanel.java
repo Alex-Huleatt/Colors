@@ -45,7 +45,6 @@ public class LayerPanel extends javax.swing.JPanel implements LayerObserver {
             @Override
             public void mouseMoved(MouseEvent e) {
                 currentMousePosn = new Point(e.getX(), e.getY());
-                selected = selectLayer();
                 repaint();
             }
 
@@ -90,7 +89,7 @@ public class LayerPanel extends javax.swing.JPanel implements LayerObserver {
         int layer_size = Math.min(getHeight(), getWidth() / layerCount);
         if (currentMousePosn != null) {
             int s = currentMousePosn.x / layer_size;
-            if (s > layerCount) {
+            if (s >= layerCount) {
                 return -1;
             } else {
                 return s;
@@ -171,12 +170,23 @@ public class LayerPanel extends javax.swing.JPanel implements LayerObserver {
         if (l.type == LayerEvent.LAYER_CREATED) {
             layerCount++;
             displayed.add(true);
+            selected = displayed.size() - 1;
         }
         if (l.type == LayerEvent.LAYER_SELECTED) {
             displayed.set(l.layer, true);
+            selected = l.layer;
         }
         if (l.type == LayerEvent.LAYER_DESELECTED) {
             displayed.set(l.layer, false);
+            if (l.layer == selected) {
+                selected = -1;
+                for (int i = displayed.size() - 1; i >= 0; i--) {
+                    if (displayed.get(i)) {
+                        selected = i;
+                        break;
+                    }
+                }
+            }
         }
         if (l.type == LayerEvent.LAYER_DELETED) {
             layerCount--;
