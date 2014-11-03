@@ -36,7 +36,7 @@ public class HistList<E> {
     public void push(E val) {
         Node<E> new_val = new Node<>(null,null,val);
         
-        if (root == null) {
+        if (root == null || len == 0) {
             root=new_val;
             len++;
         }
@@ -57,6 +57,7 @@ public class HistList<E> {
     }
     
     public E pop() {
+        if (len == 0) return null;
         Node<E> toRet = root;
         Node<E> newRoot = root.next;
         root.prev.next = newRoot;
@@ -68,7 +69,10 @@ public class HistList<E> {
     }
     
     public E removeOld() {
-        if (root == null) return null;
+        if (root == null) {
+            len = 0;
+            return null;
+        }
         Node<E> toRet = root.prev;
         root.prev = toRet.prev;
         toRet.prev.next = root;
