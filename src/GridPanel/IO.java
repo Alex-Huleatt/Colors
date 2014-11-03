@@ -20,9 +20,9 @@ import struct.Delta;
 import javax.swing.JFileChooser;
 
 public class IO {
-    
-    public IO(){
-        
+    String directory;
+    public IO(String in_directory){
+        directory = in_directory;
     }
     
     public void drawImg(Color[][] colorArr) throws IOException{
@@ -38,7 +38,7 @@ public class IO {
                 g.fillRect(i,j,1,1);
             }
         }
-        File file = new File("file.png");
+        File file = new File(directory);
         ImageIO.write(image,"PNG", file);
         
     }

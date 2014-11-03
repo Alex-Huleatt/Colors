@@ -30,11 +30,22 @@ public class GridFrame {
 
             @Override
             public void actionPerformed(ActionEvent e) {
-                try {
-                    IO io = new IO();
-                    io.drawImg(gp.colorArr);
-                } catch (IOException ex) {
-                    Logger.getLogger(GridFrame.class.getName()).log(Level.SEVERE, null, ex);
+                final JFileChooser fc = new JFileChooser();
+                fc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+                int returnVal = fc.showOpenDialog(frame);
+                if(returnVal == JFileChooser.APPROVE_OPTION){
+                    System.out.println(fc.getSelectedFile());
+                    String dir = fc.getSelectedFile().toString();
+                    String fileName = JOptionPane.showInputDialog(frame,"File name pls");                    
+                    System.out.println(dir);
+                    IO io = new IO(dir + "/" + fileName);
+                    try {
+                        io.drawImg(gp.colorArr);
+                    } catch (IOException ex) {
+                        Logger.getLogger(GridFrame.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                    
+                    
                 }
             }
             
