@@ -14,8 +14,8 @@ import java.util.Arrays;
  */
 public class Delta {
 
-    private int x;
-    private int y;
+    public int x;
+    public int y;
     private int[] delta;
 
     public Delta(int x, int y, int[] delta) {

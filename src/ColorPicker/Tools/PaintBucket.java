@@ -18,7 +18,7 @@ import java.util.ArrayList;
  * @author Alex
  */
 public class PaintBucket implements Tool {
-
+    Point temp;
     @Override
     /**
      * This function has to apply some change to colorArr
@@ -54,10 +54,18 @@ public class PaintBucket implements Tool {
 
     @Override
     public void paintSelf(Graphics g, int pixelSize, Color[][] colorArr, Color curColor) {
+        ArrayList<Delta> del = apply(curColor, temp.x, temp.y, colorArr);
+        g.setColor(curColor);
+        for (Delta d : del) {
+            g.fillRect(d.x*pixelSize+1, d.y*pixelSize+1, pixelSize-1, pixelSize-1);
+            d.undo(colorArr);
+        }
+        
     }
 
     @Override
     public void mouseMoved(Point p) {
+        temp = p;
     }
 
     @Override
