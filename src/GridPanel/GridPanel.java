@@ -317,7 +317,6 @@ public class GridPanel extends JPanel implements ColorObserver, ToolObserver, La
 
     @Override
     public void alert(LayerEvent l) {
-
         if (l.type == LayerEvent.LAYER_SELECTED) {
             selected_layer = Math.min(l.layer, layers.size() - 1);
             colorArr = layers.get(selected_layer);

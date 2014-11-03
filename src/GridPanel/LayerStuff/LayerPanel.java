@@ -22,6 +22,7 @@ public class LayerPanel extends javax.swing.JPanel implements LayerObserver {
     private int selected;
     private int layerCount;
     private LayerListener ll;
+    private int clickedLayer;
 
     /**
      * Creates new form LayerPanel
@@ -40,6 +41,7 @@ public class LayerPanel extends javax.swing.JPanel implements LayerObserver {
             @Override
             public void mouseMoved(MouseEvent e) {
                 currentMousePosn = new Point(e.getX(), e.getY());
+                selected = selectLayer();
                 repaint();
             }
 
@@ -49,8 +51,9 @@ public class LayerPanel extends javax.swing.JPanel implements LayerObserver {
 
             @Override
             public void mouseClicked(MouseEvent e) {
-                if (selected != -1 && e.getX() == currentMousePosn.x && e.getY() == currentMousePosn.y) {
-                    ll.alertObservers(new LayerEvent(LayerEvent.LAYER_SELECTED, selected));
+                clickedLayer = selectLayer();
+                if (clickedLayer != -1 && e.getX() == currentMousePosn.x && e.getY() == currentMousePosn.y) {
+                    ll.alertObservers(new LayerEvent(LayerEvent.LAYER_SELECTED, clickedLayer));
                 } else {
                     ll.alertObservers(new LayerEvent(LayerEvent.LAYER_DESELECTED, -1));
                     System.out.println("Alerted to deselect");
@@ -82,34 +85,32 @@ public class LayerPanel extends javax.swing.JPanel implements LayerObserver {
         ll.listen(this);
     }
 
+    public int selectLayer() {
+        int layer_size = Math.min(getHeight(), getWidth() / layerCount);
+        if (currentMousePosn != null) {
+        int s = currentMousePosn.x / layer_size;
+        if (s > layerCount) return -1;
+        else return s;
+        } else return -1;
+    }
+
     @Override
     public void paint(Graphics g) {
         g.setColor(Color.GRAY);
         g.fillRect(0, 0, getWidth(), getHeight());
         if (layerCount > 0) {
             int layer_size = Math.min(getHeight(), getWidth() / layerCount);
-            boolean canBeSelected = true;
-            for (int i = layerCount - 1; i >= 0; i--) {
-                if (currentMousePosn != null && canBeSelected && currentMousePosn.x > 20 * i && currentMousePosn.x <= 20 * (i + 2)) {
-                    selected = i;
-                    canBeSelected = false;
-                }
-            }
             for (int i = 0; i < layerCount; i++) {
                 g.setColor(new Color(0, 125, 155, 200));
-                g.fillRect(20 * i, 0, layer_size, layer_size);
+                g.fillRect(layer_size * i, 0, layer_size, layer_size);
                 if (i == selected) {
                     g.setColor(Color.YELLOW);
                 } else {
                     g.setColor(Color.BLACK);
                 }
-                g.drawRect(20 * i, 0, layer_size, layer_size);
-            }
-            if (canBeSelected) {
-                selected = -1;
+                g.drawRect(layer_size * i, 0, layer_size, layer_size);
             }
         }
-
         paintComponents(g);
 
     }
@@ -143,7 +144,7 @@ public class LayerPanel extends javax.swing.JPanel implements LayerObserver {
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGap(0, 11, Short.MAX_VALUE)
+                .addGap(0, 0, Short.MAX_VALUE)
                 .addComponent(jButton1))
         );
     }// </editor-fold>//GEN-END:initComponents

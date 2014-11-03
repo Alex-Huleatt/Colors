@@ -45,7 +45,7 @@ public class GridFrame {
                     System.out.println(dir);
                     IO io = new IO(dir + "/" + fileName);
                     try {
-                        io.drawImg(gp.colorArr);
+                        io.drawImg(gp.layers);
                     } catch (IOException ex) {
                         Logger.getLogger(GridFrame.class.getName()).log(Level.SEVERE, null, ex);
                     }
