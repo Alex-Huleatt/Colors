@@ -40,8 +40,6 @@ public class PaintBucket implements Tool {
         if(y < colorArr.length - 1&& colorArr[x][y + 1] == curColor){
             apply(c,x,y + 1,colorArr);
         }
-        
-        
     }
 
 }

@@ -21,13 +21,14 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import javax.swing.*;
+import java.util.LinkedList;
 
 public class GridPanel extends JPanel implements ColorObserver, ToolObserver {
 
     int height = 500;
     int width = 500;
-    int gridSizeX = 50;
-    int gridSizeY = 50;
+    int gridSizeX = 10;
+    int gridSizeY = 10;
     Color[][] colorArr = new Color[gridSizeX][gridSizeY];
 
     Color curColor = Color.BLACK;
@@ -36,6 +37,12 @@ public class GridPanel extends JPanel implements ColorObserver, ToolObserver {
     boolean showGrid = true;
     boolean connectBox = false;
     boolean backgroundShow = true;
+    
+    boolean controlDown = false;
+    
+    LinkedList<int[][]>history = new LinkedList();
+    int[][] colorIntArr = new int[gridSizeX][gridSizeY];
+    
 
     Tool currentTool = new Pencil();
 
@@ -71,6 +78,14 @@ public class GridPanel extends JPanel implements ColorObserver, ToolObserver {
 
             @Override
             public void mouseReleased(MouseEvent e) {
+                for(int i = 0; i < gridSizeX; i++){
+                    for(int j = 0; j < gridSizeY;j++){
+                        if(colorArr[i][j]!=null) colorIntArr[i][j] = colorArr[i][j].getRGB();
+                        else colorIntArr[i][j] = -1;
+                    }
+                }
+                history.add(colorIntArr);
+                System.out.println("added");
             }
 
             @Override
@@ -108,33 +123,45 @@ public class GridPanel extends JPanel implements ColorObserver, ToolObserver {
 
             @Override
             public void keyPressed(KeyEvent e) {
-                if (e.getKeyCode() == KeyEvent.VK_1) {
-                    if (!showGrid) {
-                        showGrid = true;
-                    } else {
-                        showGrid = false;
-                    }
-                }
-                if (e.getKeyCode() == KeyEvent.VK_2) {
-                    if (!connectBox) {
-                        connectBox = true;
-                    } else {
-                        connectBox = false;
-                    }
-                }
-                if (e.getKeyCode() == KeyEvent.VK_3) {
-                    if (!backgroundShow) {
-                        backgroundShow = true;
-                    } else {
-                        backgroundShow = false;
-                    }
+                switch (e.getKeyCode()) {
+                    case KeyEvent.VK_1:
+                        showGrid = !showGrid;
+                        break;
+                    case KeyEvent.VK_2:
+                        connectBox = !connectBox;
+                        break;
+                    case KeyEvent.VK_3:
+                        backgroundShow = !backgroundShow;
+                        break;
+                    case KeyEvent.VK_CONTROL:
+                        controlDown = true;
+                        break;
+                    case KeyEvent.VK_Z:
+                        if(controlDown == true && history.peekFirst() != null){
+                            colorIntArr = history.poll();
+                             for(int i = 0; i < gridSizeX; i++){
+                                for (int j = 0; j < gridSizeY; j++){
+                                    if(colorIntArr[i][j] != -1){
+                                        colorArr[i][j] = new Color(colorIntArr[i][j]);
+                                    }
+                                }
+                            
+                            }
+                             System.out.println("delete");
+                        }
+                    default:break;
                 }
                 repaint();
             }
 
             @Override
             public void keyReleased(KeyEvent e) {
-
+                switch(e.getKeyCode()){
+                    case KeyEvent.VK_CONTROL:
+                        controlDown = false;
+                    default:break;
+                }
+                
             }
 
         });
