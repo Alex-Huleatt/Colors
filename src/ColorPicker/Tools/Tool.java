@@ -6,7 +6,7 @@
 
 package ColorPicker.Tools;
 
-import ColorPicker.Point;
+import Util.Point;
 import Util.Delta;
 import java.awt.Color;
 import java.awt.Graphics;

@@ -4,15 +4,15 @@
  * and open the template in the editor.
  */
 
-package ColorPicker;
+package Util;
 
 /**
  *
  * @author Alex
  */
 public class Point {
-    int x;
-    int y;
+    public int x;
+    public int y;
     
     public Point(int x, int y) {
         this.x =x;
