@@ -7,13 +7,18 @@
 package ColorPicker.Tools;
 
 import ColorPicker.Point;
+import Util.Delta;
 import java.awt.Color;
+import java.awt.Graphics;
 import java.awt.Image;
+import java.util.ArrayList;
 
 /**
  *
  * @author Alex
  */
 public interface Tool {
-    public void apply(Color c, int x, int y, Color[][] colorArr);
+    public ArrayList<Delta> apply(Color c, int x, int y, Color[][] colorArr);
+    
+    public void paintSelf(Graphics g, int pixelSize);
 }
