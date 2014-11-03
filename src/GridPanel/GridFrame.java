@@ -10,6 +10,9 @@ package GridPanel;
  */
 import ColorPicker.ColorListener;
 import ColorPicker.Tools.ToolListener;
+import GridPanel.LayerStuff.LayerListener;
+import GridPanel.LayerStuff.LayerObserver;
+import GridPanel.LayerStuff.LayerPanel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -21,6 +24,7 @@ import javax.swing.*;
 public class GridFrame {
     JFrame frame = new JFrame("Grid");
     GridPanel gp;
+    LayerPanel lp;
     public GridFrame(){
         frame.setDefaultCloseOperation(frame.EXIT_ON_CLOSE);
         frame.setLayout(new BorderLayout());
@@ -54,8 +58,14 @@ public class GridFrame {
         
         frame.add(exp, BorderLayout.NORTH);
         frame.add(gp = new GridPanel(),BorderLayout.CENTER);
+        
+        lp = new LayerPanel();
+        frame.add(lp,BorderLayout.SOUTH);
+        
         frame.pack();
-        frame.setVisible(true);   
+        frame.setVisible(true);  
+        
+        
     }
     
     public void setColor(Color c) {
@@ -63,11 +73,16 @@ public class GridFrame {
     }
     
     public void giveCL(ColorListener cl) {
-        cl.listenToThis(gp);
+        cl.listen(gp);
         gp.cl = cl;
     }
     
     public void giveTL(ToolListener tl) {
         tl.listen(gp);
+    }
+    
+    public void giveLL(LayerListener ll) {
+        lp.giveLL(ll);
+        ll.listen((LayerObserver)gp);
     }
 }

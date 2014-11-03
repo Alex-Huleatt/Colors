@@ -7,19 +7,22 @@
 package ColorPicker.Tools;
 
 import java.util.ArrayList;
+import struct.Event;
+import struct.Listener;
+import struct.Observer;
 
 /**
  *
  * @author Alex
  */
-public class ToolListener {
+public class ToolListener implements Listener {
     ArrayList<ToolObserver> to;
     
     public ToolListener() {
         this.to = new ArrayList<>();
     }
     
-    public void tell(Tool newTool) {
+    public void alertObservers(ToolEvent newTool) {
         for (ToolObserver t : to) {
             t.alert(newTool);
         }
@@ -27,5 +30,15 @@ public class ToolListener {
     
     public void listen(ToolObserver t) {
         to.add(t);
+    }
+
+    @Override
+    public void alertObservers(Event e) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void listen(Observer o) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }

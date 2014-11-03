@@ -6,12 +6,14 @@
 
 package ColorPicker.Tools;
 
+import struct.Observer;
+
 /**
  *
  * @author Alex
  */
-public interface ToolObserver {
+public interface ToolObserver extends Observer {
     
-    public void alert(Tool t);
+    public void alert(ToolEvent t);
     
 }

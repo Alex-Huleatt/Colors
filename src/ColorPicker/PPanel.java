@@ -17,6 +17,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.util.Arrays;
+import struct.Event;
 
 /**
  *
@@ -81,13 +82,13 @@ public class PPanel extends javax.swing.JPanel implements ColorObserver {
 
     public void giveCL(ColorListener cl) {
         this.cl = cl;
-        cl.listenToThis(this);
+        cl.listen(this);
 
     }
 
     public void selectColor(Color c) {
         selectedColor = c;
-        cl.alert(selectedColor);
+        cl.alertObservers(new ColorEvent(selectedColor));
     }
 
     public void setSaturation(double d) {
@@ -194,8 +195,19 @@ public class PPanel extends javax.swing.JPanel implements ColorObserver {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     // End of variables declaration//GEN-END:variables
     @Override
-    public void alert(Color c) {
+    public void alert(ColorEvent c) {
         System.out.println("PPanel was alerted to color change.");
         //do nothing
+    }
+    
+    @Override
+    public void alert(Event e) {
+        if (e instanceof ColorEvent) {
+           observe((ColorEvent) e); 
+        }
+    }
+    
+    public void observe(ColorEvent e) {
+        selectedColor = e.c;
     }
 }

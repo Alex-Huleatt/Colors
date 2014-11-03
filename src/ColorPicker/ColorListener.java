@@ -8,22 +8,26 @@ package ColorPicker;
 import GridPanel.*;
 import java.awt.Color;
 import java.util.ArrayList;
+import struct.Event;
+import struct.Listener;
+import struct.Observer;
 /**
  *
  * @author Alex
  */
-public class ColorListener {
+public class ColorListener implements Listener {
     public ArrayList<ColorObserver> wantsToKnow;
     public ColorListener() {
         wantsToKnow = new ArrayList<>();
     }
-    public void listenToThis(ColorObserver co) {
-        wantsToKnow.add(co);
+    public void listen(Observer co) {
+        if (co instanceof ColorObserver) wantsToKnow.add((ColorObserver)co);
     }
-    public void alert(Color newColor) {
+    public void alertObservers(Event e) {
         for (ColorObserver co : wantsToKnow) {
             System.out.println("Alerted.");
-            co.alert(newColor);
+            co.alert((ColorEvent) e);
         }
     }
+
 }

@@ -7,6 +7,7 @@ package ColorPicker;
 
 import java.awt.Color;
 import java.awt.Graphics;
+import struct.Event;
 
 /**
  *
@@ -25,10 +26,10 @@ public class ColorSamplePanel extends javax.swing.JPanel implements ColorObserve
 
     @Override
     public void paint(Graphics g) {
+        g.setColor(Color.WHITE);
+        g.fillRect(0, 0, getWidth(), getHeight());
         g.setColor(myColor);
         g.fillRect(0, 0, getWidth(), getHeight());
-        g.setColor(Color.BLACK);
-        g.drawRect(0, 0, getWidth(), getHeight());
     }
 
     /**
@@ -56,9 +57,14 @@ public class ColorSamplePanel extends javax.swing.JPanel implements ColorObserve
     // Variables declaration - do not modify//GEN-BEGIN:variables
     // End of variables declaration//GEN-END:variables
     @Override
-    public void alert(Color c) {
+    public void alert(ColorEvent c) {
         System.out.println("Sample panel was alerted to color change.");
-        myColor = c;
+        myColor = c.c;
         repaint();
+    }
+
+    @Override
+    public void alert(Event e) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }

@@ -11,6 +11,7 @@ package GridPanel;
  */
 import ColorPicker.*;
 import ColorPicker.Tools.ToolListener;
+import GridPanel.LayerStuff.LayerListener;
 import java.awt.Color;
 public class Main {
 
@@ -22,11 +23,13 @@ public class Main {
         PFrame cFrame = new PFrame();
         ColorListener cl = new ColorListener();
         ToolListener tl = new ToolListener();
+        LayerListener ll = new LayerListener();
         cFrame.giveTL(tl);
         cFrame.giveCL(cl);
         frame.giveCL(cl);
         frame.giveTL(tl);
-        cl.alert(Color.WHITE);
+        frame.giveLL(ll);
+        cl.alertObservers(new ColorEvent(Color.WHITE));
     }
     
 }

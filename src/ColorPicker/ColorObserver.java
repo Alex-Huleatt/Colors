@@ -7,13 +7,14 @@
 package ColorPicker;
 
 import java.awt.Color;
+import struct.Observer;
 
 /**
  *
  * @author Alex
  */
-public interface ColorObserver {
+public interface ColorObserver extends Observer {
     
-    public void alert(Color c);
+    public void alert(ColorEvent c);
     
 }

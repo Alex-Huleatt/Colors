@@ -26,9 +26,9 @@ public class ComboPanel extends javax.swing.JPanel {
     }
     
     public void giveCL(ColorListener cl) {
-        cl.listenToThis(colorInputPanel1);
+        cl.listen(colorInputPanel1);
         colorInputPanel1.giveCL(cl);
-        cl.listenToThis(colorSamplePanel1);
+        cl.listen(colorSamplePanel1);
     }
 
     /**
