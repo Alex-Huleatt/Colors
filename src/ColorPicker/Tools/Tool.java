@@ -6,8 +6,8 @@
 
 package ColorPicker.Tools;
 
-import Util.Point;
-import Util.Delta;
+import struct.Point;
+import struct.Delta;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Image;

@@ -6,7 +6,10 @@
 
 package ColorPicker.Tools;
 
+import struct.Delta;
 import java.awt.Color;
+import java.awt.Graphics;
+import java.util.ArrayList;
 
 /**
  *
@@ -15,7 +18,7 @@ import java.awt.Color;
 public class Averager implements Tool {
 
     @Override
-    public void apply(Color c, int x, int y, Color[][] colorArr) {
+    public ArrayList<Delta> apply(Color c, int x, int y, Color[][] colorArr) {
         int count = 0;
         int r = 0;
         int g = 0;
@@ -36,7 +39,14 @@ public class Averager implements Tool {
         r/=count;
         g/=count;
         b/=count;
-        colorArr[x][y] = new Color(r,g,b);
+        Color newC =  new Color(r,g,b);
+        ArrayList<Delta> change = new ArrayList<>();
+        change.add(new Delta(x,y,colorArr[x][y],newC));
+        colorArr[x][y] = newC;
+        return change;
     }
+
+    @Override
+    public void paintSelf(Graphics g, int pixelSize) { }
     
 }

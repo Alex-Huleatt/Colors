@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 
-package Util;
+package struct;
 
 import java.awt.Color;
 
