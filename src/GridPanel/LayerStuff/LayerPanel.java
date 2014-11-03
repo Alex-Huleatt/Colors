@@ -27,7 +27,7 @@ public class LayerPanel extends javax.swing.JPanel implements LayerObserver {
      * Creates new form LayerPanel
      */
     public LayerPanel() {
-        layerCount = 5;
+        layerCount = 0;
         initComponents();
         selected = -1;
         setFocusable(true);
@@ -51,6 +51,9 @@ public class LayerPanel extends javax.swing.JPanel implements LayerObserver {
             public void mouseClicked(MouseEvent e) {
                 if (selected != -1 && e.getX() == currentMousePosn.x && e.getY() == currentMousePosn.y) {
                     ll.alertObservers(new LayerEvent(LayerEvent.LAYER_SELECTED, selected));
+                } else {
+                    ll.alertObservers(new LayerEvent(LayerEvent.LAYER_DESELECTED, -1));
+                    System.out.println("Alerted to deselect");
                 }
             }
 
@@ -86,20 +89,27 @@ public class LayerPanel extends javax.swing.JPanel implements LayerObserver {
         if (layerCount > 0) {
             int layer_size = Math.min(getHeight(), getWidth() / layerCount);
             boolean canBeSelected = true;
-            for (int i = 0; i <= layerCount; i++) {
-                g.setColor(new Color(0, 125, 155, 200));
-                g.fillRect(20 * i, 0, layer_size, layer_size);
-                if (currentMousePosn != null && canBeSelected && currentMousePosn.x > 20*i && currentMousePosn.x <= 20*(i+1)) {
-                    g.setColor(Color.YELLOW);
+            for (int i = layerCount - 1; i >= 0; i--) {
+                if (currentMousePosn != null && canBeSelected && currentMousePosn.x > 20 * i && currentMousePosn.x <= 20 * (i + 2)) {
                     selected = i;
                     canBeSelected = false;
+                }
+            }
+            for (int i = 0; i < layerCount; i++) {
+                g.setColor(new Color(0, 125, 155, 200));
+                g.fillRect(20 * i, 0, layer_size, layer_size);
+                if (i == selected) {
+                    g.setColor(Color.YELLOW);
                 } else {
                     g.setColor(Color.BLACK);
                 }
                 g.drawRect(20 * i, 0, layer_size, layer_size);
             }
-            if (canBeSelected) selected = -1;
+            if (canBeSelected) {
+                selected = -1;
+            }
         }
+
         paintComponents(g);
 
     }
@@ -148,10 +158,8 @@ public class LayerPanel extends javax.swing.JPanel implements LayerObserver {
     // End of variables declaration//GEN-END:variables
     @Override
     public void alert(LayerEvent l) {
-        System.out.println("Hey");
         if (l.type == LayerEvent.LAYER_CREATED) {
             layerCount++;
-            System.out.println("Hey");
         }
         if (l.type == LayerEvent.LAYER_DELETED) {
             layerCount--;

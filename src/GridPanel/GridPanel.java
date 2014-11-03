@@ -51,12 +51,14 @@ public class GridPanel extends JPanel implements ColorObserver, ToolObserver, La
     boolean connectBox = false;
     boolean backgroundShow = true;
 
-    int[][] colorIntArr = new int[gridSizeX][gridSizeY];
+    int[][] colorIntArr;
     Stack<ArrayList<Delta>> history;
     Stack<ArrayList<Delta>> redo;
     ArrayList<Delta> dragging_total;
 
     Tool currentTool = new Pencil();
+
+    int selected_layer;
 
     public GridPanel() {
         setPreferredSize(new Dimension(height, width));
@@ -65,9 +67,7 @@ public class GridPanel extends JPanel implements ColorObserver, ToolObserver, La
         redo = new Stack<>();
         dragging_total = new ArrayList<>();
         layers = new ArrayList<>();
-        for (Color[] arr : colorArr) {
-            Arrays.fill(arr, new Color(255, 255, 255, 128));
-        }
+        selected_layer = -1;
         addMouseListener(new MouseListener() {
 
             @Override
@@ -105,9 +105,9 @@ public class GridPanel extends JPanel implements ColorObserver, ToolObserver, La
                 for (int i = 0; i < gridSizeX; i++) {
                     for (int j = 0; j < gridSizeY; j++) {
                         if (colorArr[i][j] != null) {
-                            colorIntArr[i][j] = colorArr[i][j].getRGB();
+                            //colorIntArr[i][j] = colorArr[i][j].getRGB();
                         } else {
-                            colorIntArr[i][j] = -1;
+                            //colorIntArr[i][j] = -1;
                         }
                     }
                 }
@@ -227,8 +227,13 @@ public class GridPanel extends JPanel implements ColorObserver, ToolObserver, La
         if (backgroundShow) {
             g.fillRect(0, 0, tWidth, tHeight);
         }
-        for (Color[][] layer : layers) {
-            drawLayer(layer, g, actual_grid_size);
+        if (selected_layer == -1) {
+            for (int i = 0; i < layers.size(); i++) {
+                drawLayer(layers.get(i), g, actual_grid_size);
+            }
+
+        } else {
+            drawLayer(layers.get(selected_layer), g, actual_grid_size);
         }
         drawLayer(colorArr, g, actual_grid_size);
         currentTool.paintSelf(g, actual_grid_size, colorArr, curColor);
@@ -247,14 +252,16 @@ public class GridPanel extends JPanel implements ColorObserver, ToolObserver, La
     }
 
     private void drawLayer(Color[][] layer, Graphics g, int grid_size) {
-        for (int i = 0; i < gridSizeX; i++) {
-            for (int j = 0; j < gridSizeY; j++) {
-                if (colorArr[i][j] != null) {
-                    g.setColor(colorArr[i][j]);
-                    if (connectBox) {
-                        g.fillRect((i * grid_size) + 1, (j * grid_size) + 1, grid_size, grid_size);
-                    } else {
-                        g.fillRect((i * grid_size) + 1, (j * grid_size) + 1, grid_size - 1, grid_size - 1);
+        if (layer != null) {
+            for (int i = 0; i < gridSizeX; i++) {
+                for (int j = 0; j < gridSizeY; j++) {
+                    if (layer[i][j] != null) {
+                        g.setColor(layer[i][j]);
+                        if (connectBox) {
+                            g.fillRect((i * grid_size) + 1, (j * grid_size) + 1, grid_size, grid_size);
+                        } else {
+                            g.fillRect((i * grid_size) + 1, (j * grid_size) + 1, grid_size - 1, grid_size - 1);
+                        }
                     }
                 }
             }
@@ -311,9 +318,24 @@ public class GridPanel extends JPanel implements ColorObserver, ToolObserver, La
     @Override
     public void alert(LayerEvent l) {
 
-        layers.add(colorArr);
         if (l.type == LayerEvent.LAYER_SELECTED) {
-            colorArr = layers.get(l.layer);
+            selected_layer = Math.min(l.layer, layers.size() - 1);
+            colorArr = layers.get(selected_layer);
+
         }
+        if (l.type == LayerEvent.LAYER_CREATED) {
+            colorArr = new Color[gridSizeX][gridSizeY];
+            for (Color[] arr : colorArr) {
+                Arrays.fill(arr, new Color(255, 255, 255, 0));
+            }
+            layers.add(colorArr);
+            selected_layer = layers.size()-1;
+
+        }
+        if (l.type == LayerEvent.LAYER_DESELECTED) {
+            selected_layer = -1;
+            colorArr = layers.get(layers.size()-1);
+        }
+        repaint();
     }
 }

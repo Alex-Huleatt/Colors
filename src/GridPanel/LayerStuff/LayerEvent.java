@@ -16,6 +16,7 @@ public class LayerEvent implements Event {
     public static int LAYER_SELECTED = 0;
     public static int LAYER_CREATED = 1;
     public static int LAYER_DELETED = 2;
+    public static int LAYER_DESELECTED = 3;
     
     public int type;
     public int layer;
