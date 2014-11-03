@@ -7,6 +7,7 @@
 package struct;
 
 import java.awt.Color;
+import java.util.Arrays;
 
 /**
  *
@@ -27,12 +28,24 @@ public class Delta {
     public Delta(int x, int y, Color old, Color newC) {
         this.x = x;
         this.y = y;
-        this.delta = new int[] {old.getRed() - newC.getRed(), old.getGreen() - newC.getGreen(), old.getBlue() - newC.getBlue()};
+        if (old == null) {old = Color.WHITE;}
+        this.delta = new int[] {old.getRed() - newC.getRed(), old.getGreen() - newC.getGreen(), old.getBlue() - newC.getBlue(), old.getAlpha() - newC.getAlpha()};
     }
     
     
     public void undo(Color[][] colorArr) {
         Color c = colorArr[x][y];
-        colorArr[x][y] = new Color(c.getRed()-delta[0],c.getGreen()-delta[1],c.getBlue()-delta[2]);
+        colorArr[x][y] = new Color(c.getRed()+delta[0],c.getGreen()+delta[1],c.getBlue()+delta[2], c.getAlpha()-delta[3]);
+    }
+    
+    public boolean amUseless() {
+        for (int i = 0; i < delta.length; i++) {
+            if (delta[i] != 0) return false;
+        }
+        return true;
+    }
+    
+    public String toString() {
+        return "(" + x + "," + y + ")" + ":" + Arrays.toString(delta);
     }
 }
