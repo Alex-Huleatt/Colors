@@ -31,24 +31,23 @@ public class PaintBucket implements Tool {
     }
     
     public void bucketHelper(Color c, int x, int y, Color[][] colorArr, ArrayList<Delta> deltaMap){
-        Color curColor = colorArr[x][y];       
-        if(curColor == c) return;
+        Color curColor = colorArr[x][y]; 
+        if(curColor.equals(c)) return;
 
         colorArr[x][y] = c;
         
         deltaMap.add(new Delta(x,y,curColor,c));
         
-        
-        if(x > 0 && colorArr[x - 1][y] == curColor){
+        if(x > 0 && curColor.equals(colorArr[x-1][y])) {
             bucketHelper(c,x - 1,y,colorArr,deltaMap);
         }
-        if(x < colorArr[0].length - 1&& colorArr[x + 1][y] == curColor){
+        if(x < colorArr[0].length - 1 && curColor.equals(colorArr[x+1][y])) {
             bucketHelper(c,x + 1,y,colorArr,deltaMap);
         }
-        if(y > 0 && colorArr[x][y - 1] == curColor){
+        if(y > 0 && curColor.equals(colorArr[x][y-1])){
             bucketHelper(c,x,y - 1,colorArr,deltaMap);
         }
-        if(y < colorArr.length - 1&& colorArr[x][y + 1] == curColor){
+        if(y < colorArr.length - 1 && curColor.equals(colorArr[x][y+1])) {
             bucketHelper(c,x,y + 1,colorArr,deltaMap);
         }
     }

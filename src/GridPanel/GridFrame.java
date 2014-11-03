@@ -11,6 +11,8 @@ package GridPanel;
 import ColorPicker.ColorListener;
 import ColorPicker.Tools.ToolListener;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import javax.swing.*;
 
 public class GridFrame {
@@ -20,6 +22,17 @@ public class GridFrame {
         frame.setDefaultCloseOperation(frame.EXIT_ON_CLOSE);
         frame.setLayout(new BorderLayout());
         frame.add(gp = new GridPanel(),BorderLayout.CENTER);
+        JButton exp = new JButton("Export");
+        exp.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                
+            }
+            
+        });
+        
+        frame.add(exp, BorderLayout.NORTH);
         frame.pack();
         frame.setVisible(true);   
     }

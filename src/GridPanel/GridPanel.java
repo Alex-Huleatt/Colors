@@ -20,8 +20,12 @@ import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
-import javax.swing.*;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.LinkedList;
+import javax.swing.*;
+import struct.Delta;
+import struct.HistList;
 
 public class GridPanel extends JPanel implements ColorObserver, ToolObserver {
 
@@ -37,15 +41,19 @@ public class GridPanel extends JPanel implements ColorObserver, ToolObserver {
     boolean showGrid = true;
     boolean connectBox = false;
     boolean backgroundShow = true;
-    
+
     int[][] colorIntArr = new int[gridSizeX][gridSizeY];
-    
+    HistList<ArrayList<Delta>> history;
 
     Tool currentTool = new Pencil();
 
     public GridPanel() {
         setPreferredSize(new Dimension(height, width));
         setFocusable(true);
+        history = new HistList<>(10);
+        for (Color[] arr : colorArr) {
+            Arrays.fill(arr, new Color(255, 255, 255, 255));
+        }
         addMouseListener(new MouseListener() {
 
             @Override
@@ -75,10 +83,13 @@ public class GridPanel extends JPanel implements ColorObserver, ToolObserver {
 
             @Override
             public void mouseReleased(MouseEvent e) {
-                for(int i = 0; i < gridSizeX; i++){
-                    for(int j = 0; j < gridSizeY;j++){
-                        if(colorArr[i][j]!=null) colorIntArr[i][j] = colorArr[i][j].getRGB();
-                        else colorIntArr[i][j] = -1;
+                for (int i = 0; i < gridSizeX; i++) {
+                    for (int j = 0; j < gridSizeY; j++) {
+                        if (colorArr[i][j] != null) {
+                            colorIntArr[i][j] = colorArr[i][j].getRGB();
+                        } else {
+                            colorIntArr[i][j] = -1;
+                        }
                     }
                 }
                 System.out.println("added");
@@ -130,8 +141,16 @@ public class GridPanel extends JPanel implements ColorObserver, ToolObserver {
                         backgroundShow = !backgroundShow;
                         break;
                     case KeyEvent.VK_Z:
-                            
-                    default:break;
+                        if (e.isControlDown()) {
+                            ArrayList<Delta> toUndo = history.pop();
+                            System.out.println("Undoing " + toUndo.size() + " things.");
+                            System.out.println("History now has " + history.size());
+                            for (Delta d : toUndo) {
+                                d.undo(colorArr);
+                            }
+                        }
+                    default:
+                        break;
                 }
                 repaint();
             }
@@ -146,7 +165,7 @@ public class GridPanel extends JPanel implements ColorObserver, ToolObserver {
     public void paint(Graphics g) {
         g.clearRect(0, 0, getWidth(), getHeight()); //clears the screen
         g.setColor(Color.GRAY);
-        g.clearRect(0,0,getWidth(), getHeight());
+        g.clearRect(0, 0, getWidth(), getHeight());
         int gridX = getWidth() / gridSizeX;
         int gridY = getHeight() / gridSizeY;
         int actual_grid_size = Math.min(gridX, gridY);
@@ -183,7 +202,18 @@ public class GridPanel extends JPanel implements ColorObserver, ToolObserver {
     }
 
     public void fillArr(int x, int y) {
-        currentTool.apply(curColor, x, y, colorArr);
+        ArrayList<Delta> changes = currentTool.apply(curColor, x, y, colorArr);
+        ArrayList<Delta> accepted = new ArrayList<>();
+        for (Delta d : changes) {
+            if (!d.amUseless()) {
+                accepted.add(d);
+                System.out.println(d);
+            }
+
+        }
+        if (accepted.size() > 0) {
+            history.push(accepted);
+        }
     }
 
     @Override
