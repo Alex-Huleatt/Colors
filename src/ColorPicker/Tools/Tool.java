@@ -21,5 +21,9 @@ import java.util.ArrayList;
 public interface Tool {
     public ArrayList<Delta> apply(Color c, int x, int y, Color[][] colorArr);
     
-    public void paintSelf(Graphics g, int pixelSize);
+    public void paintSelf(Graphics g, int pixelSize, Color[][] colorArr, Color curColor);
+    
+    public void mouseMoved(Point p);
+    public void mouseDragged(Point p);
+    
 }

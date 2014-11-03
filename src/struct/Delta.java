@@ -35,11 +35,6 @@ public class Delta {
 
     public void undo(Color[][] colorArr) {
         Color c = colorArr[x][y];
-        int r = c.getRed() + delta[0];
-        int g =  c.getGreen() + delta[1];
-        int b =  c.getBlue() + delta[2];
-        int a = c.getAlpha() + delta[3];
-        System.out.println(r + " " + g + " "+ b + " "+ a);
         colorArr[x][y] = new Color(c.getRed() + delta[0], c.getGreen() + delta[1], c.getBlue() + delta[2], c.getAlpha() + delta[3]);
     }
 

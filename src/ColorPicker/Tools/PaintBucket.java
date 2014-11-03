@@ -53,7 +53,14 @@ public class PaintBucket implements Tool {
     }
 
     @Override
-    public void paintSelf(Graphics g, int pixelSize) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public void paintSelf(Graphics g, int pixelSize, Color[][] colorArr, Color curColor) {
+    }
+
+    @Override
+    public void mouseMoved(Point p) {
+    }
+
+    @Override
+    public void mouseDragged(Point p) {
     }
 }

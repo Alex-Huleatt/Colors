@@ -7,14 +7,16 @@ package GridPanel;
 
 /**
  *
- * @author ninjakl
+ * @author ninjakl and also Alex
  */
 import ColorPicker.ColorListener;
 import ColorPicker.ColorObserver;
 import ColorPicker.Tools.Pencil;
 import ColorPicker.Tools.Tool;
 import ColorPicker.Tools.ToolObserver;
-import java.awt.*;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Graphics;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
@@ -23,9 +25,11 @@ import java.awt.event.MouseMotionListener;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedList;
+import java.util.Stack;
 import javax.swing.*;
 import struct.Delta;
 import struct.HistList;
+import struct.Point;
 
 public class GridPanel extends JPanel implements ColorObserver, ToolObserver {
 
@@ -43,16 +47,18 @@ public class GridPanel extends JPanel implements ColorObserver, ToolObserver {
     boolean backgroundShow = true;
 
     int[][] colorIntArr = new int[gridSizeX][gridSizeY];
-    HistList<ArrayList<Delta>> history;
-    HistList<ArrayList<Delta>> redo;
+    Stack<ArrayList<Delta>> history;
+    Stack<ArrayList<Delta>> redo;
+    ArrayList<Delta> dragging_total;
 
     Tool currentTool = new Pencil();
 
     public GridPanel() {
         setPreferredSize(new Dimension(height, width));
         setFocusable(true);
-        history = new HistList<>(30);
-        redo = new HistList<>(30);
+        history = new Stack<>();
+        redo = new Stack<>();
+        dragging_total = new ArrayList<>();
         for (Color[] arr : colorArr) {
             Arrays.fill(arr, new Color(255, 255, 255, 255));
         }
@@ -60,6 +66,7 @@ public class GridPanel extends JPanel implements ColorObserver, ToolObserver {
 
             @Override
             public void mouseClicked(MouseEvent e) {
+                dragging_total = new ArrayList<>();
                 int gridX = (getWidth()) / gridSizeX;
                 int gridY = (getHeight()) / gridSizeY;
                 int actual_grid_size = Math.min(gridX, gridY);
@@ -85,6 +92,10 @@ public class GridPanel extends JPanel implements ColorObserver, ToolObserver {
 
             @Override
             public void mouseReleased(MouseEvent e) {
+                if (dragging_total.size() > 0) {
+                    history.push(dragging_total);
+                }
+                dragging_total = new ArrayList<>();
                 for (int i = 0; i < gridSizeX; i++) {
                     for (int j = 0; j < gridSizeY; j++) {
                         if (colorArr[i][j] != null) {
@@ -114,12 +125,19 @@ public class GridPanel extends JPanel implements ColorObserver, ToolObserver {
                 int actual_grid_size = Math.min(gridX, gridY);
                 int x = e.getX() / actual_grid_size;
                 int y = e.getY() / actual_grid_size;
-                fillArr(x, y);
+                fillArr_drag(x, y);
                 repaint();
             }
 
             @Override
             public void mouseMoved(MouseEvent e) {
+                int gridX = (getWidth()) / gridSizeX;
+                int gridY = (getHeight()) / gridSizeY;
+                int actual_grid_size = Math.min(gridX, gridY);
+                int x = e.getX() / actual_grid_size;
+                int y = e.getY() / actual_grid_size;
+                currentTool.mouseMoved(new Point(x, y));
+                repaint();
             }
 
         });
@@ -144,8 +162,8 @@ public class GridPanel extends JPanel implements ColorObserver, ToolObserver {
                         break;
                     case KeyEvent.VK_Z:
                         if (e.isControlDown()) {
+                            if (history.empty()) return;
                             ArrayList<Delta> toUndo = history.pop();
-                            if (toUndo == null) break;
                             System.out.println("Undoing " + toUndo.size() + " things.");
                             int count = 0;
                             System.out.println(history.size());
@@ -159,8 +177,11 @@ public class GridPanel extends JPanel implements ColorObserver, ToolObserver {
                         }
                     case KeyEvent.VK_Y:
                         if (e.isControlDown()) {
+                            if (redo.empty()) return;
                             ArrayList<Delta> toUnUndo = redo.pop();
-                            if (toUnUndo == null) break;
+                            if (toUnUndo == null) {
+                                break;
+                            }
                             for (Delta d : toUnUndo) {
                                 d.unundo(colorArr);
                             }
@@ -186,6 +207,7 @@ public class GridPanel extends JPanel implements ColorObserver, ToolObserver {
         int gridX = getWidth() / gridSizeX;
         int gridY = getHeight() / gridSizeY;
         int actual_grid_size = Math.min(gridX, gridY);
+        if (actual_grid_size == 0) return;
         int tWidth = actual_grid_size * gridSizeX;
         int tHeight = actual_grid_size * gridSizeY;
         g.setColor(Color.white);
@@ -205,6 +227,8 @@ public class GridPanel extends JPanel implements ColorObserver, ToolObserver {
                 }
             }
         }
+
+        currentTool.paintSelf(g, actual_grid_size, colorArr, curColor);
         g.setColor(Color.black);
         if (showGrid) {
             for (int i = 0; i <= actual_grid_size * gridSizeX; i += actual_grid_size) {
@@ -228,10 +252,24 @@ public class GridPanel extends JPanel implements ColorObserver, ToolObserver {
             }
 
         }
-        redo = new HistList<>(30);
+        redo = new Stack<>();
         if (accepted.size() > 0) {
             history.push(accepted);
         }
+    }
+
+    public void fillArr_drag(int x, int y) {
+        ArrayList<Delta> changes = currentTool.apply(curColor, x, y, colorArr);
+        ArrayList<Delta> accepted = new ArrayList<>();
+        for (Delta d : changes) {
+            if (!d.amUseless()) {
+                accepted.add(d);
+                System.out.println(d);
+            }
+
+        }
+        redo = new Stack<>();
+        dragging_total.addAll(accepted);
     }
 
     @Override

@@ -9,6 +9,7 @@ import struct.Delta;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.util.ArrayList;
+import struct.Point;
 
 /**
  *
@@ -23,8 +24,16 @@ public class Square implements Tool{
     }
 
     @Override
-    public void paintSelf(Graphics g, int pixelSize) {
+    public void paintSelf(Graphics g, int pixelSize, Color[][] colorArr, Color curColor) {
         
+    }
+
+    @Override
+    public void mouseMoved(Point p) {
+    }
+
+    @Override
+    public void mouseDragged(Point p) {
     }
     
     
