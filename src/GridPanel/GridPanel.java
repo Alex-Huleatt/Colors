@@ -169,6 +169,8 @@ public class GridPanel extends JPanel implements ColorObserver, ToolObserver {
 
     public void paint(Graphics g) {
         g.clearRect(0, 0, getWidth(), getHeight()); //clears the screen
+        g.setColor(Color.GRAY);
+        g.clearRect(0,0,getWidth(), getHeight());
         int gridX = getWidth() / gridSizeX;
         int gridY = getHeight() / gridSizeY;
         int actual_grid_size = Math.min(gridX, gridY);
