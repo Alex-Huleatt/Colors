@@ -67,6 +67,15 @@ public class HistList<E> {
         return toRet.val;
     }
     
+    public E removeOld() {
+        if (root == null) return null;
+        Node<E> toRet = root.prev;
+        root.prev = toRet.prev;
+        toRet.prev.next = root;
+        len--;
+        return toRet.val;
+    }
+    
     public int size() {
         return len;
     }
