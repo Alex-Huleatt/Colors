@@ -15,5 +15,7 @@ import java.io.File;
 import javax.imageio.ImageIO;
         
 public class IO {
-    
+    public void drawImg(){
+        
+    }
 }
