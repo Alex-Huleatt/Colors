@@ -44,13 +44,15 @@ public class GridPanel extends JPanel implements ColorObserver, ToolObserver {
 
     int[][] colorIntArr = new int[gridSizeX][gridSizeY];
     HistList<ArrayList<Delta>> history;
+    HistList<ArrayList<Delta>> redo;
 
     Tool currentTool = new Pencil();
 
     public GridPanel() {
         setPreferredSize(new Dimension(height, width));
         setFocusable(true);
-        history = new HistList<>(10);
+        history = new HistList<>(30);
+        redo = new HistList<>(30);
         for (Color[] arr : colorArr) {
             Arrays.fill(arr, new Color(255, 255, 255, 255));
         }
@@ -143,11 +145,26 @@ public class GridPanel extends JPanel implements ColorObserver, ToolObserver {
                     case KeyEvent.VK_Z:
                         if (e.isControlDown()) {
                             ArrayList<Delta> toUndo = history.pop();
+                            if (toUndo == null) break;
                             System.out.println("Undoing " + toUndo.size() + " things.");
-                            System.out.println("History now has " + history.size());
+                            int count = 0;
+                            System.out.println(history.size());
                             for (Delta d : toUndo) {
                                 d.undo(colorArr);
+                                count++;
                             }
+                            System.out.println(history.size());
+                            redo.push(toUndo);
+                            break;
+                        }
+                    case KeyEvent.VK_Y:
+                        if (e.isControlDown()) {
+                            ArrayList<Delta> toUnUndo = redo.pop();
+                            if (toUnUndo == null) break;
+                            for (Delta d : toUnUndo) {
+                                d.unundo(colorArr);
+                            }
+                            history.push(toUnUndo);
                         }
                     default:
                         break;
@@ -211,6 +228,7 @@ public class GridPanel extends JPanel implements ColorObserver, ToolObserver {
             }
 
         }
+        redo = new HistList<>(30);
         if (accepted.size() > 0) {
             history.push(accepted);
         }

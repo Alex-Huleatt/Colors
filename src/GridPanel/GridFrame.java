@@ -24,8 +24,9 @@ public class GridFrame {
     public GridFrame(){
         frame.setDefaultCloseOperation(frame.EXIT_ON_CLOSE);
         frame.setLayout(new BorderLayout());
-        frame.add(gp = new GridPanel(),BorderLayout.CENTER);
+        
         JButton exp = new JButton("Export");
+        exp.setFocusable(false);
         exp.addActionListener(new ActionListener() {
 
             @Override
@@ -52,6 +53,7 @@ public class GridFrame {
         });
         
         frame.add(exp, BorderLayout.NORTH);
+        frame.add(gp = new GridPanel(),BorderLayout.CENTER);
         frame.pack();
         frame.setVisible(true);   
     }
