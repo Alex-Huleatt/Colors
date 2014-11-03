@@ -27,6 +27,8 @@ public class ColorSamplePanel extends javax.swing.JPanel implements ColorObserve
     public void paint(Graphics g) {
         g.setColor(myColor);
         g.fillRect(0, 0, getWidth(), getHeight());
+        g.setColor(Color.BLACK);
+        g.drawRect(0, 0, getWidth(), getHeight());
     }
 
     /**

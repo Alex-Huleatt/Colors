@@ -5,6 +5,7 @@
  */
 package ColorPicker;
 
+import Util.Point;
 import colors.Colors;
 import java.awt.Color;
 import java.awt.FontMetrics;

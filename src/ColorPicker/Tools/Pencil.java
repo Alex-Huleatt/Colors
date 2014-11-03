@@ -5,7 +5,10 @@
  */
 package ColorPicker.Tools;
 
+import Util.Delta;
 import java.awt.Color;
+import java.awt.Graphics;
+import java.util.ArrayList;
 
 /**
  *
@@ -14,10 +17,16 @@ import java.awt.Color;
 public class Pencil implements Tool {
 
     @Override
-    public void apply(Color c, int x, int y, Color[][] colorArr) {
+    public ArrayList<Delta> apply(Color c, int x, int y, Color[][] colorArr) {
+        ArrayList<Delta> d = new ArrayList<>();
         if (x < colorArr.length && x >= 0 && y < colorArr[x].length && y >= 0) {
+            d.add(new Delta(x,y,colorArr[x][y],c));
             colorArr[x][y] = c;
         }
+        return d;
     }
+    
+    @Override
+    public void paintSelf(Graphics g, int pixelSize) { }
 
 }
