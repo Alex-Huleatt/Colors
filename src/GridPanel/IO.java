@@ -26,16 +26,16 @@ public class IO {
         directory = in_directory;
     }
 
-    public void drawImg(ArrayList<Color[][]> colorArr) throws IOException {
-        int width = colorArr.get(0)[0].length;
-        int height = colorArr.get(0).length;
+    public void drawImg(ArrayList<Layer> layers) throws IOException {
+        int width = layers.get(0).colorArr[0].length;
+        int height = layers.get(0).colorArr.length;
 
         BufferedImage image = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
         Graphics g = image.createGraphics();
-        for (Color[][] c : colorArr) {
+        for (Layer c : layers) {
             for (int i = 0; i < width; i++) {
                 for (int j = 0; j < height; j++) {
-                    g.setColor(c[i][j]);
+                    g.setColor(c.colorArr[i][j]);
                     g.fillRect(i, j, 1, 1);
                 }
             }

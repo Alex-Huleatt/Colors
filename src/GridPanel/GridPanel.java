@@ -41,8 +41,8 @@ public class GridPanel extends JPanel implements ColorObserver, ToolObserver, La
     int width = 500;
     int gridSizeX = 10;
     int gridSizeY = 10;
-    ArrayList<Color[][]> layers; //ogre.
-    Color[][] colorArr = new Color[gridSizeX][gridSizeY];
+    ArrayList<Layer> layers; //ogre.
+    Layer currentLayer;
 
     Color curColor = Color.BLACK;
     ColorListener cl;
@@ -51,9 +51,7 @@ public class GridPanel extends JPanel implements ColorObserver, ToolObserver, La
     boolean connectBox = false;
     boolean backgroundShow = true;
 
-    int[][] colorIntArr;
-    Stack<ArrayList<Delta>> history;
-    Stack<ArrayList<Delta>> redo;
+    //int[][] colorIntArr;
     ArrayList<Delta> dragging_total;
 
     Tool currentTool = new Pencil();
@@ -63,8 +61,6 @@ public class GridPanel extends JPanel implements ColorObserver, ToolObserver, La
     public GridPanel() {
         setPreferredSize(new Dimension(height, width));
         setFocusable(true);
-        history = new Stack<>();
-        redo = new Stack<>();
         dragging_total = new ArrayList<>();
         layers = new ArrayList<>();
         selected_layer = -1;
@@ -79,13 +75,13 @@ public class GridPanel extends JPanel implements ColorObserver, ToolObserver, La
                 int x = e.getX() / actual_grid_size;
                 int y = e.getY() / actual_grid_size;
                 if (SwingUtilities.isRightMouseButton(e) || e.isShiftDown()) {
-                    if (colorArr[x][y] == null) {
+                    if (currentLayer.colorArr[x][y] == null) {
                         cl.alertObservers(new ColorEvent(Color.WHITE));
                         curColor = Color.WHITE;
                         return;
                     }
-                    cl.alertObservers(new ColorEvent(colorArr[x][y]));
-                    curColor = colorArr[x][y];
+                    cl.alertObservers(new ColorEvent(currentLayer.colorArr[x][y]));
+                    curColor = currentLayer.colorArr[x][y];
                     return;
                 }
                 fillArr(x, y);
@@ -99,18 +95,18 @@ public class GridPanel extends JPanel implements ColorObserver, ToolObserver, La
             @Override
             public void mouseReleased(MouseEvent e) {
                 if (dragging_total.size() > 0) {
-                    history.push(dragging_total);
+                    currentLayer.undo.push(dragging_total);
                 }
                 dragging_total = new ArrayList<>();
-                for (int i = 0; i < gridSizeX; i++) {
-                    for (int j = 0; j < gridSizeY; j++) {
-                        if (colorArr[i][j] != null) {
-                            //colorIntArr[i][j] = colorArr[i][j].getRGB();
-                        } else {
-                            //colorIntArr[i][j] = -1;
-                        }
-                    }
-                }
+//                for (int i = 0; i < gridSizeX; i++) {
+//                    for (int j = 0; j < gridSizeY; j++) {
+//                        if (colorArr[i][j] != null) {
+//                            //colorIntArr[i][j] = colorArr[i][j].getRGB();
+//                        } else {
+//                            //colorIntArr[i][j] = -1;
+//                        }
+//                    }
+//                }
                 System.out.println("added");
             }
 
@@ -168,34 +164,11 @@ public class GridPanel extends JPanel implements ColorObserver, ToolObserver, La
                         break;
                     case KeyEvent.VK_Z:
                         if (e.isControlDown()) {
-                            if (history.empty()) {
-                                return;
-                            }
-                            ArrayList<Delta> toUndo = history.pop();
-                            System.out.println("Undoing " + toUndo.size() + " things.");
-                            int count = 0;
-                            System.out.println(history.size());
-                            for (Delta d : toUndo) {
-                                d.undo(colorArr);
-                                count++;
-                            }
-                            System.out.println(history.size());
-                            redo.push(toUndo);
-                            break;
+                            currentLayer.undo();
                         }
                     case KeyEvent.VK_Y:
                         if (e.isControlDown()) {
-                            if (redo.empty()) {
-                                return;
-                            }
-                            ArrayList<Delta> toUnUndo = redo.pop();
-                            if (toUnUndo == null) {
-                                break;
-                            }
-                            for (Delta d : toUnUndo) {
-                                d.unundo(colorArr);
-                            }
-                            history.push(toUnUndo);
+                            currentLayer.redo();
                         }
                     default:
                         break;
@@ -227,16 +200,13 @@ public class GridPanel extends JPanel implements ColorObserver, ToolObserver, La
         if (backgroundShow) {
             g.fillRect(0, 0, tWidth, tHeight);
         }
-        if (selected_layer == -1) {
-            for (int i = 0; i < layers.size(); i++) {
-                drawLayer(layers.get(i), g, actual_grid_size);
-            }
-
-        } else {
-            drawLayer(layers.get(selected_layer), g, actual_grid_size);
+        for (Layer l : layers) {
+            l.drawLayer(g, actual_grid_size, connectBox, gridSizeX, gridSizeY);
         }
-        drawLayer(colorArr, g, actual_grid_size);
-        currentTool.paintSelf(g, actual_grid_size, colorArr, curColor);
+        
+        if (currentLayer != null) {
+            currentTool.paintSelf(g, actual_grid_size, currentLayer.colorArr, curColor);
+        }
 
         if (showGrid) {
             g.setColor(Color.black);
@@ -251,25 +221,10 @@ public class GridPanel extends JPanel implements ColorObserver, ToolObserver, La
         }
     }
 
-    private void drawLayer(Color[][] layer, Graphics g, int grid_size) {
-        if (layer != null) {
-            for (int i = 0; i < gridSizeX; i++) {
-                for (int j = 0; j < gridSizeY; j++) {
-                    if (layer[i][j] != null) {
-                        g.setColor(layer[i][j]);
-                        if (connectBox) {
-                            g.fillRect((i * grid_size) + 1, (j * grid_size) + 1, grid_size, grid_size);
-                        } else {
-                            g.fillRect((i * grid_size) + 1, (j * grid_size) + 1, grid_size - 1, grid_size - 1);
-                        }
-                    }
-                }
-            }
-        }
-    }
+
 
     public void fillArr(int x, int y) {
-        ArrayList<Delta> changes = currentTool.apply(curColor, x, y, colorArr);
+        ArrayList<Delta> changes = currentTool.apply(curColor, x, y, currentLayer.colorArr);
         ArrayList<Delta> accepted = new ArrayList<>();
         for (Delta d : changes) {
             if (!d.amUseless()) {
@@ -278,14 +233,14 @@ public class GridPanel extends JPanel implements ColorObserver, ToolObserver, La
             }
 
         }
-        redo = new Stack<>();
+        currentLayer.redo = new Stack<>();
         if (accepted.size() > 0) {
-            history.push(accepted);
+            currentLayer.undo.push(accepted);
         }
     }
 
     public void fillArr_drag(int x, int y) {
-        ArrayList<Delta> changes = currentTool.apply(curColor, x, y, colorArr);
+        ArrayList<Delta> changes = currentTool.apply(curColor, x, y, currentLayer.colorArr);
         ArrayList<Delta> accepted = new ArrayList<>();
         for (Delta d : changes) {
             if (!d.amUseless()) {
@@ -294,7 +249,7 @@ public class GridPanel extends JPanel implements ColorObserver, ToolObserver, La
             }
 
         }
-        redo = new Stack<>();
+        currentLayer.redo = new Stack<>();
         dragging_total.addAll(accepted);
     }
 
@@ -318,22 +273,27 @@ public class GridPanel extends JPanel implements ColorObserver, ToolObserver, La
     @Override
     public void alert(LayerEvent l) {
         if (l.type == LayerEvent.LAYER_SELECTED) {
-            selected_layer = Math.min(l.layer, layers.size() - 1);
-            colorArr = layers.get(selected_layer);
-
+            layers.get(l.layer).displayable = true;
+            currentLayer = layers.get(l.layer);
         }
         if (l.type == LayerEvent.LAYER_CREATED) {
-            colorArr = new Color[gridSizeX][gridSizeY];
-            for (Color[] arr : colorArr) {
+            Layer newLayer = new Layer(new Color[gridSizeX][gridSizeY]);
+            for (Color[] arr : newLayer.colorArr) {
                 Arrays.fill(arr, new Color(255, 255, 255, 0));
             }
-            layers.add(colorArr);
-            selected_layer = layers.size()-1;
-
+            layers.add(newLayer);
+            currentLayer = newLayer;
         }
         if (l.type == LayerEvent.LAYER_DESELECTED) {
-            selected_layer = -1;
-            colorArr = layers.get(layers.size()-1);
+            layers.get(l.layer).displayable = false;
+            currentLayer = null;
+            for (int i = layers.size()-1; i>= 0; i--) {
+                if (layers.get(i).displayable) {
+                    currentLayer = layers.get(i);
+                    break;
+                }
+            }
+                     
         }
         repaint();
     }
